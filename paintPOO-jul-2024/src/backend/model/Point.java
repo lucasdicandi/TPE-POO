@@ -2,7 +2,7 @@ package backend.model;
 
 public class  Point {
 
-    public double x, y;
+    private double x, y;
 
     public Point(double x, double y) {
         this.x = x;
@@ -15,6 +15,15 @@ public class  Point {
 
     public double getY() {
         return y;
+    }
+
+    public void setX(double new_x) {
+        this.x = new_x;
+    }
+
+
+    public void setY(double new_y){
+        this.y = new_y;
     }
 
     @Override

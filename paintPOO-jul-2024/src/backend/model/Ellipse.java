@@ -28,4 +28,19 @@ public class Ellipse implements Figure {
         return sMinorAxis;
     }
 
+    @Override
+    public double area() {
+        return Math.PI / 4 * sMayorAxis * sMinorAxis;
+    }
+
+    @Override
+    public double perimeter() {
+        return Math.PI / 2 * (sMayorAxis + sMinorAxis);
+    }
+
+    @Override
+    public void draw(double diffX, double diffY) {
+        centerPoint.setX(getCenterPoint().getX() + diffX);
+        centerPoint.setY(getCenterPoint().getY() + diffY);
+    }
 }
