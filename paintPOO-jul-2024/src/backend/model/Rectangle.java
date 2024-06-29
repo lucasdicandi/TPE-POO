@@ -1,5 +1,7 @@
 package backend.model;
 
+import javafx.scene.canvas.GraphicsContext;
+
 public class Rectangle implements Figure {
 
     private final Point topLeft, bottomRight;
@@ -46,5 +48,19 @@ public class Rectangle implements Figure {
         bottomRight.setX(getBottomRight().getX() + diffX);
         topLeft.setY(getTopLeft().getY() + diffY);
         bottomRight.setY(getBottomRight().getY() + diffY);
+    }
+
+    @Override
+    public void redraw(GraphicsContext gc) {
+        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
+                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+        gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
+                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+    }
+
+    @Override
+    public boolean containsPoint(Point point) {
+        return point.getX() > topLeft.getX() && point.getX() < bottomRight.getX()
+                && point.getY() > topLeft.getY() && point.getY() < bottomRight.getY();
     }
 }
