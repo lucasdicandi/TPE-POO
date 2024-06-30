@@ -2,14 +2,21 @@ package backend.model;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public interface Figure {
-    double area();
+public abstract class Figure {
+    protected Point startPoint;
+    protected Point endPoint;
 
-    double perimeter();
+    public Figure(Point startPoint, Point endPoint) {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+    }
+    public abstract double area();
 
-    void draw(double diffX, double  diffY);
+    public abstract double perimeter();
 
-    void redraw(GraphicsContext gc);
+    public abstract void draw(double diffX, double  diffY);
 
-    boolean containsPoint(Point point);
+    public abstract void redraw(GraphicsContext gc);
+
+    public abstract boolean containsPoint(Point point);
 }

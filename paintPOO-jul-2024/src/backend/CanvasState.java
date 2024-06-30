@@ -1,6 +1,8 @@
 package backend;
 
 import backend.model.Figure;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,3 +24,6 @@ public class CanvasState {
     }
 
 }
+
+
+

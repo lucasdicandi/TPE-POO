@@ -5,9 +5,12 @@ import javafx.scene.canvas.GraphicsContext;
 public class Circle extends Ellipse {
     protected final double radius;
 
-    public Circle(Point centerPoint, double radius) {
-        super(centerPoint, 2 * radius, 2 * radius);
-        this.radius = radius;
+
+    public Circle(Point startPoint, Point endPoint) {
+        super(startPoint, endPoint);
+        this.radius = Math.abs(endPoint.getX() - startPoint.getX()) / 2;
+        this.sMayorAxis = radius * 2;
+        this.sMinorAxis = radius * 2;
     }
 
     @Override

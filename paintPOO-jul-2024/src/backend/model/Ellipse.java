@@ -2,15 +2,17 @@ package backend.model;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class Ellipse implements Figure {
+public class Ellipse extends Figure {
 
     protected final Point centerPoint;
-    protected final double sMayorAxis, sMinorAxis;
+    protected double sMayorAxis;
+    protected double sMinorAxis;
 
-    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis) {
-        this.centerPoint = centerPoint;
-        this.sMayorAxis = sMayorAxis;
-        this.sMinorAxis = sMinorAxis;
+    public Ellipse(Point startPoint, Point endPoint) {
+        super(startPoint, endPoint);
+        this.centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, Math.abs(endPoint.getY() + startPoint.getY()) / 2);
+        this.sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
+        this.sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
     }
 
     @Override

@@ -1,0 +1,114 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+@startuml
+
+class Point {
+  - double x
+  - double y
+  + Point(double x, double y)
+  + double getX()
+  + double getY()
+  + void setX(double x)
+  + void setY(double y)
+}
+
+interface Figure {
+  - Point origin
+  + Figure(Point origin)
+  + Point getOrigin()
+  + void setOrigin(Point origin)
+  + abstract double getArea()
+  + abstract double getPerimeter()
+}
+
+class Rectangle implements Figure {
+  - double width
+  - double height
+  + Rectangle(Point origin, double width, double height)
+  + double getWidth()
+  + double getHeight()
+  + void setWidth(double width)
+  + void setHeight(double height)
+  + double getArea()
+  + double getPerimeter()
+}
+
+class Square extends Rectangle {
+  + Square(Point origin, double side)
+  + double getSide()
+  + void setSide(double side)
+}
+
+class Circle extends Ellipse {
+  - double radius
+  + Circle(Point origin, double radius)
+  + double getRadius()
+  + void setRadius(double radius)
+  + double getArea()
+  + double getPerimeter()
+}
+
+class Ellipse implements Figure {
+  - double majorAxis
+  - double minorAxis
+  + Ellipse(Point origin, double majorAxis, double minorAxis)
+  + double getMajorAxis()
+  + double getMinorAxis()
+  + void setMajorAxis(double majorAxis)
+  + void setMinorAxis(double minorAxis)
+  + double getArea()
+  + double getPerimeter()
+}
+
+class CanvasState {
+  - List<Figure> figures
+  + CanvasState()
+  + void addFigure(Figure figure)
+  + void removeFigure(Figure figure)
+  + List<Figure> getFigures()
+}
+
+class AppLauncher {
+  + static void main(String[] args)
+}
+
+class AppMenuBar {
+  - JMenu fileMenu
+  - JMenu editMenu
+  + AppMenuBar(MainFrame frame)
+}
+
+class MainFrame {
+  - PaintPane paintPane
+  - StatusPane statusPane
+  - AppMenuBar menuBar
+  + MainFrame()
+}
+
+class PaintPane {
+  - CanvasState canvasState
+  + PaintPane(CanvasState state)
+  + void paintComponent(Graphics g)
+}
+
+class StatusPane {
+  + StatusPane()
+  + void updateStatus(String status)
+}
+
+
+
+
+
+
+
+CanvasState o-- Figure
+PaintPane --> CanvasState
+MainFrame --> PaintPane
+MainFrame --> StatusPane
+MainFrame --> AppMenuBar
+AppMenuBar --> MainFrame
+
+@enduml
+

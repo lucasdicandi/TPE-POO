@@ -2,11 +2,12 @@ package backend.model;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class Rectangle implements Figure {
+public class Rectangle extends Figure {
 
     private final Point topLeft, bottomRight;
 
     public Rectangle(Point topLeft, Point bottomRight) {
+        super(topLeft, bottomRight);
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
     }
@@ -57,6 +58,7 @@ public class Rectangle implements Figure {
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
     }
+
 
     @Override
     public boolean containsPoint(Point point) {
