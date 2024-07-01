@@ -7,10 +7,10 @@ import frontend.PaintPane;
 public class DuplicateToolButton extends ToolButton {
 
     private final PaintPane paintPane;
-    private static final int OFFSET = 20; // Define the offset for the duplication
+    private static final int OFFSET = 20;
 
     public DuplicateToolButton(PaintPane paintPane) {
-        super("Duplicate");
+        super("Duplicar");
         this.paintPane = paintPane;
         this.setOnMouseClicked(event -> onMouseClicked(paintPane, event.getX(), event.getY()));
     }
@@ -24,8 +24,6 @@ public class DuplicateToolButton extends ToolButton {
             duplicatedFigure.draw(OFFSET, OFFSET);
             paintPane.addFigure(duplicatedFigure);
             paintPane.redrawCanvas();
-        }else {
-            System.out.println("No figure selected for duplication."); // Debug message
         }
     }
 }

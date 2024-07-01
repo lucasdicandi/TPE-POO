@@ -30,22 +30,6 @@ public class DivideToolButton extends ToolButton{
         }
     }
 
-    /*
-    Override
-    public void actionPerformed(ActionEvent e) {
-        Figure selectedFigure = paintPane.getSelectedFigure();
-        if (selectedFigure != null) {
-            Figure[] dividedFigures = selectedFigure.divide(); // Assuming divide method is implemented correctly
-            paintPane.removeFigure(selectedFigure); // Remove the original figure
-            for (Figure figure : dividedFigures) {
-                paintPane.addFigure(figure);
-            }
-            paintPane.redrawCanvas();
-        } else {
-            System.out.println("No figure selected for division."); // Debug message
-        }
-    }
-     */
 
 
 }

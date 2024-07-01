@@ -69,13 +69,15 @@ public class Rectangle extends Figure {
     @Override
     public Figure[] divide() {
         double halfWidth = Math.abs(bottomRight.getX() - topLeft.getX()) / 2;
-        double halfHeight = Math.abs(bottomRight.getY() - topLeft.getY()) / 2;
+        double height = Math.abs(bottomRight.getY() - topLeft.getY());
 
-        Point newBottomRight1 = new Point(topLeft.getX() + halfWidth, topLeft.getY() + halfHeight);
-        Point newTopLeft2 = new Point(topLeft.getX() + halfWidth, topLeft.getY());
-        Point newBottomRight2 = new Point(bottomRight.getX(), topLeft.getY() + halfHeight);
+        Point newTopLeft1 = new Point(topLeft.getX(), topLeft.getY() + height / 4);
+        Point newBottomRight1 = new Point(topLeft.getX() + halfWidth, bottomRight.getY() - height / 4);
 
-        Rectangle rect1 = new Rectangle(topLeft, newBottomRight1);
+        Point newTopLeft2 = new Point(topLeft.getX() + halfWidth, topLeft.getY() + height / 4);
+        Point newBottomRight2 = new Point(bottomRight.getX(), bottomRight.getY() - height / 4);
+
+        Rectangle rect1 = new Rectangle(newTopLeft1, newBottomRight1);
         Rectangle rect2 = new Rectangle(newTopLeft2, newBottomRight2);
 
         return new Figure[] { rect1, rect2 };
