@@ -3,6 +3,7 @@ package frontend;
 import backend.CanvasState;
 import backend.model.*;
 import frontend.Buttons.*;
+import frontend.Renders.*;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -13,19 +14,24 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class PaintPane extends BorderPane {
-	private CanvasState canvasState;
-	private Canvas canvas = new Canvas(800, 600);
-	private GraphicsContext gc = canvas.getGraphicsContext2D();
-	private Color lineColor = Color.BLACK;
-	private Color defaultFillColor = Color.YELLOW;
+	private final CanvasState canvasState;
+	private final Canvas canvas = new Canvas(800, 600);
+	private final GraphicsContext gc = canvas.getGraphicsContext2D();
+	private final Color lineColor = Color.BLACK;
+	private final Color defaultFillColor = Color.YELLOW;
 	private Point startPoint;
 	private Figure selectedFigure;
-	private StatusPane statusPane;
+	private final StatusPane statusPane;
 	private ToolButton currentTool;
-	private ToggleGroup toolsGroup = new ToggleGroup();
-	private ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
+	private final ToggleGroup toolsGroup = new ToggleGroup();
+	private final ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
+
+	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
@@ -34,6 +40,10 @@ public class PaintPane extends BorderPane {
 		initializeTools();
 		initializeUI();
 		setupCanvasEvents();
+		this.rendererMap.put(Circle.class, new CircleRenderer());
+		this.rendererMap.put(Rectangle.class, new RectangleRenderer());
+		this.rendererMap.put(Ellipse.class, new EllipseRenderer());
+		this.rendererMap.put(Square.class, new SquareRenderer());
 	}
 
 	private void initializeTools() {
@@ -43,6 +53,7 @@ public class PaintPane extends BorderPane {
 				new CircleToolButton(),
 				new SquareToolButton(),
 				new EllipseToolButton(),
+				new DuplicateToolButton(this),
 				new DeleteToolButton(this)
 		};
 
@@ -109,8 +120,13 @@ public class PaintPane extends BorderPane {
 		for (Figure figure : canvasState.figures()) {
 			gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
 			gc.setFill(figure.getColor());
-			figure.redraw(gc);
+			FigureRenderer renderer = rendererMap.get(figure.getClass());
+			renderer.render(figure, gc);
 		}
+	}
+
+	public GraphicsContext getGc() {
+		return gc;
 	}
 
 	public Figure findFigureAtPoint(Point point) {

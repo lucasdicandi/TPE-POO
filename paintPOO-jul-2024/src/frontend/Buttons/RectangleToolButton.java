@@ -2,9 +2,11 @@ package frontend.Buttons;
 
 import backend.model.*;
 import frontend.PaintPane;
+import frontend.Renders.RectangleRenderer;
 import javafx.scene.paint.Color;
 
 public class RectangleToolButton extends ToolButton {
+    RectangleRenderer rectangleToPlain = new RectangleRenderer();
     public RectangleToolButton() {
         super("Rectángulo");
     }
@@ -20,7 +22,9 @@ public class RectangleToolButton extends ToolButton {
         Point endPoint = new Point(x, y);
         Figure figure = new Rectangle(startPoint, endPoint);
         if (startPoint != null && endPoint.getX() >= startPoint.getX() && endPoint.getY() >= startPoint.getY()) {
-            insertFigure(paintPane, figure);
+            paintPane.addFigure(figure);
+            paintPane.setStartPoint(null);
+            rectangleToPlain.render(figure, paintPane.getGc());
         }
     }
 }

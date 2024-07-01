@@ -28,10 +28,4 @@ public abstract class ToolButton extends ToggleButton implements Button {
     public void onMouseDragged(PaintPane paintPane, double x, double y) {}
 
 
-    public void insertFigure(PaintPane paintPane, Figure figure){
-        paintPane.addFigure(figure);
-        paintPane.setStartPoint(null);
-        paintPane.redrawCanvas();
-    }
-
 }

@@ -18,7 +18,6 @@ public class DeleteToolButton extends ToolButton {
         if (selectedFigure != null) {
             paintPane.removeFigure(selectedFigure);
             paintPane.setSelectedFigure(null);
-            paintPane.redrawCanvas();
         }
     }
 

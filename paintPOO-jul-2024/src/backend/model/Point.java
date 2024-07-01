@@ -21,7 +21,6 @@ public class  Point {
         this.x = new_x;
     }
 
-
     public void setY(double new_y){
         this.y = new_y;
     }
@@ -29,6 +28,11 @@ public class  Point {
     @Override
     public String toString() {
         return String.format("{%.2f , %.2f}", x, y);
+    }
+
+    @Override
+    public Point clone() {
+        return new Point(this.x, this.y);
     }
 
 }

@@ -5,8 +5,11 @@ import backend.model.Ellipse;
 import backend.model.Figure;
 import backend.model.Point;
 import frontend.PaintPane;
+import frontend.Renders.EllipseRenderer;
 
 public class EllipseToolButton extends ToolButton {
+
+    EllipseRenderer ellipseToPlain = new EllipseRenderer();
     public EllipseToolButton() {
         super("Elipse");
     }
@@ -22,7 +25,9 @@ public class EllipseToolButton extends ToolButton {
         Point endPoint = new Point(x, y);
         Figure figure = new Ellipse(startPoint, endPoint);
         if (startPoint != null && endPoint.getX() >= startPoint.getX() && endPoint.getY() >= startPoint.getY()) {
-            insertFigure(paintPane, figure);
+            paintPane.addFigure(figure);
+            paintPane.setStartPoint(null);
+            ellipseToPlain.render(figure, paintPane.getGc());
         }
     }
 }

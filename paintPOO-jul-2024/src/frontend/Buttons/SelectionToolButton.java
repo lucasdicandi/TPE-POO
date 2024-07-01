@@ -38,7 +38,7 @@ public class SelectionToolButton extends ToolButton {
         if (selectedFigure != null) {
             double deltaX = x - initialX ;
             double deltaY = y - initialY ;
-            selectedFigure.move(deltaX, deltaY);
+            selectedFigure.draw(deltaX, deltaY);
             initialX = x;
             initialY = y;
             paintPane.redrawCanvas();

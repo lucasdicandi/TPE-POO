@@ -1,6 +1,6 @@
 package backend.model;
 
-import javafx.scene.canvas.GraphicsContext;
+
 
 public class Ellipse extends Figure {
 
@@ -56,23 +56,23 @@ public class Ellipse extends Figure {
         centerPoint.setY(getCenterPoint().getY() + diffY);
     }
 
-    @Override
-    public void redraw(GraphicsContext gc) {
-        gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2),
-                getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2),
-                getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-    }
-
-    @Override
-    public void move(double deltaX, double deltaY) {
-        draw(deltaX, deltaY);
-    }
 
     @Override
     public boolean containsPoint(Point point) {
         double normalizedX = Math.pow(point.getX() - centerPoint.getX(), 2) / Math.pow(sMayorAxis / 2, 2);
         double normalizedY = Math.pow(point.getY() - centerPoint.getY(), 2) / Math.pow(sMinorAxis / 2, 2);
         return (normalizedX + normalizedY) <= 1.0;
+    }
+
+    @Override
+    public Ellipse clone() {
+        // Create new points for the cloned ellipse
+        Point clonedStartPoint = new Point(getStartPoint().getX(), getStartPoint().getY());
+        Point clonedEndPoint = new Point(getEndPoint().getX(), getEndPoint().getY());
+        // Create a new Ellipse with cloned points and the same axis lengths
+        Ellipse clonedEllipse = new Ellipse(clonedStartPoint, clonedEndPoint);
+        clonedEllipse.setsMayorAxis(this.sMayorAxis);
+        clonedEllipse.setsMinorAxis(this.sMinorAxis);
+        return clonedEllipse;
     }
 }

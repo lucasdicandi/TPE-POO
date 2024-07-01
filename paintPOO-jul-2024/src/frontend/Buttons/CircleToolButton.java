@@ -2,8 +2,11 @@ package frontend.Buttons;
 
 import backend.model.*;
 import frontend.PaintPane;
+import frontend.Renders.CircleRenderer;
 
 public class CircleToolButton extends ToolButton {
+
+    CircleRenderer circleToPlain = new CircleRenderer();
     public CircleToolButton() {
         super("Círculo");
     }
@@ -19,7 +22,9 @@ public class CircleToolButton extends ToolButton {
         Point endPoint = new Point(x, y);
         Figure figure = new Circle(startPoint, endPoint);
         if (startPoint != null && endPoint.getX() >= startPoint.getX() && endPoint.getY() >= startPoint.getY()) {
-            insertFigure(paintPane, figure);
+            paintPane.addFigure(figure);
+            paintPane.setStartPoint(null);
+            circleToPlain.render(figure, paintPane.getGc());
         }
     }
 }

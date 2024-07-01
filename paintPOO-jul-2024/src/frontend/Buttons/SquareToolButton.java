@@ -5,8 +5,10 @@ import backend.model.Point;
 import backend.model.Rectangle;
 import backend.model.Square;
 import frontend.PaintPane;
+import frontend.Renders.SquareRenderer;
 
 public class SquareToolButton extends ToolButton {
+    SquareRenderer squareToPlane = new SquareRenderer();
     public SquareToolButton() {
         super("Cuadrado");
     }
@@ -22,7 +24,9 @@ public class SquareToolButton extends ToolButton {
         Point endPoint = new Point(x, y);
         Figure figure = new Square(startPoint, endPoint);
         if (startPoint != null && endPoint.getX() >= startPoint.getX() && endPoint.getY() >= startPoint.getY()) {
-            insertFigure(paintPane, figure);
+            paintPane.addFigure(figure);
+            paintPane.setStartPoint(null);
+            squareToPlane.render(figure, paintPane.getGc());
         }
     }
 }

@@ -1,7 +1,5 @@
 package backend.model;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 public class Rectangle extends Figure {
 
@@ -52,18 +50,18 @@ public class Rectangle extends Figure {
         bottomRight.setY(getBottomRight().getY() + diffY);
     }
 
-    @Override
-    public void redraw(GraphicsContext gc) {
-        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
-        gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
-    }
-
 
     @Override
     public boolean containsPoint(Point point) {
         return point.getX() > topLeft.getX() && point.getX() < bottomRight.getX()
                 && point.getY() > topLeft.getY() && point.getY() < bottomRight.getY();
+    }
+
+
+    @Override
+    public Figure clone() {
+        Point clonedTopLeft = new Point(topLeft.getX(), topLeft.getY());
+        Point clonedBottomRight = new Point(bottomRight.getX(), bottomRight.getY());
+        return new Rectangle(clonedTopLeft, clonedBottomRight);
     }
 }
