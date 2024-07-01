@@ -53,6 +53,7 @@ public class PaintPane extends BorderPane {
 				new CircleToolButton(),
 				new SquareToolButton(),
 				new EllipseToolButton(),
+				new DivideToolButton(this),
 				new DuplicateToolButton(this),
 				new DeleteToolButton(this)
 		};

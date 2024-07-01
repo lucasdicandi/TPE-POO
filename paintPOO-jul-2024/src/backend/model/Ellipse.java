@@ -66,13 +66,66 @@ public class Ellipse extends Figure {
 
     @Override
     public Ellipse clone() {
-        // Create new points for the cloned ellipse
         Point clonedStartPoint = new Point(getStartPoint().getX(), getStartPoint().getY());
         Point clonedEndPoint = new Point(getEndPoint().getX(), getEndPoint().getY());
-        // Create a new Ellipse with cloned points and the same axis lengths
         Ellipse clonedEllipse = new Ellipse(clonedStartPoint, clonedEndPoint);
         clonedEllipse.setsMayorAxis(this.sMayorAxis);
         clonedEllipse.setsMinorAxis(this.sMinorAxis);
         return clonedEllipse;
     }
+
+
+//    @Override
+//    public Figure[] divide() {
+//        double halfMajorAxis = sMayorAxis / 2;
+//        Point newCenter1 = new Point(centerPoint.getX() - halfMajorAxis / 2, centerPoint.getY());
+//        Point newCenter2 = new Point(centerPoint.getX() + halfMajorAxis / 2, centerPoint.getY());
+//
+//        Point startPoint1 = new Point(newCenter1.getX() - halfMajorAxis / 2, newCenter1.getY() - sMinorAxis / 2);
+//        Point endPoint1 = new Point(newCenter1.getX() + halfMajorAxis / 2, newCenter1.getY() + sMinorAxis / 2);
+//
+//        Point startPoint2 = new Point(newCenter2.getX() - halfMajorAxis / 2, newCenter2.getY() - sMinorAxis / 2);
+//        Point endPoint2 = new Point(newCenter2.getX() + halfMajorAxis / 2, newCenter2.getY() + sMinorAxis / 2);
+//
+//        Ellipse ellipse1 = new Ellipse(startPoint1, endPoint1);
+//        Ellipse ellipse2 = new Ellipse(startPoint2, endPoint2);
+//
+//        ellipse1.setsMayorAxis(halfMajorAxis);
+//        ellipse1.setsMinorAxis(sMinorAxis);
+//        ellipse2.setsMayorAxis(halfMajorAxis);
+//        ellipse2.setsMinorAxis(sMinorAxis);
+//
+//        return new Figure[] { ellipse1, ellipse2 };
+//    }
+
+    @Override
+    public Figure[] divide() {
+        double halfMajorAxis = sMayorAxis / 2;
+
+        // Calculate new centers for the divided ellipses
+        Point newCenter1 = new Point(centerPoint.getX() - halfMajorAxis / 2, centerPoint.getY());
+        Point newCenter2 = new Point(centerPoint.getX() + halfMajorAxis / 2, centerPoint.getY());
+
+        // Create the new ellipses with adjusted points
+        Ellipse ellipse1 = new Ellipse(
+                new Point(newCenter1.getX() - halfMajorAxis / 2, centerPoint.getY() - sMinorAxis / 2),
+                new Point(newCenter1.getX() + halfMajorAxis / 2, centerPoint.getY() + sMinorAxis / 2)
+        );
+        Ellipse ellipse2 = new Ellipse(
+                new Point(newCenter2.getX() - halfMajorAxis / 2, centerPoint.getY() - sMinorAxis / 2),
+                new Point(newCenter2.getX() + halfMajorAxis / 2, centerPoint.getY() + sMinorAxis / 2)
+        );
+
+        // Set the major and minor axes for the new ellipses
+        ellipse1.setsMayorAxis(halfMajorAxis);
+        ellipse1.setsMinorAxis(sMinorAxis/2);
+        ellipse2.setsMayorAxis(halfMajorAxis);
+        ellipse2.setsMinorAxis(sMinorAxis/2);
+
+        // Return the new ellipses
+        return new Figure[] { ellipse1, ellipse2 };
+    }
+
+
+
 }

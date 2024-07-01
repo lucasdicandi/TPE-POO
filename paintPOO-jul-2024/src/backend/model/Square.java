@@ -18,4 +18,5 @@ public class Square extends Rectangle{
                 && point.getY() >= getTopLeft().getY() && point.getY() <= getBottomRight().getY();
     }
 
+
 }

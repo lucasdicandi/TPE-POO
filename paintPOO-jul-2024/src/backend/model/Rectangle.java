@@ -64,4 +64,20 @@ public class Rectangle extends Figure {
         Point clonedBottomRight = new Point(bottomRight.getX(), bottomRight.getY());
         return new Rectangle(clonedTopLeft, clonedBottomRight);
     }
+
+
+    @Override
+    public Figure[] divide() {
+        double halfWidth = Math.abs(bottomRight.getX() - topLeft.getX()) / 2;
+        double halfHeight = Math.abs(bottomRight.getY() - topLeft.getY()) / 2;
+
+        Point newBottomRight1 = new Point(topLeft.getX() + halfWidth, topLeft.getY() + halfHeight);
+        Point newTopLeft2 = new Point(topLeft.getX() + halfWidth, topLeft.getY());
+        Point newBottomRight2 = new Point(bottomRight.getX(), topLeft.getY() + halfHeight);
+
+        Rectangle rect1 = new Rectangle(topLeft, newBottomRight1);
+        Rectangle rect2 = new Rectangle(newTopLeft2, newBottomRight2);
+
+        return new Figure[] { rect1, rect2 };
+    }
 }

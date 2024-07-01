@@ -40,4 +40,5 @@ public abstract class Figure {
 
     public abstract Figure clone();
 
+    public abstract Figure[] divide();
 }
