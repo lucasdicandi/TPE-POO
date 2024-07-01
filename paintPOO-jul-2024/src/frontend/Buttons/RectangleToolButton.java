@@ -1,9 +1,8 @@
 package frontend.Buttons;
 
-import backend.model.Figure;
-import backend.model.Point;
-import backend.model.Rectangle;
+import backend.model.*;
 import frontend.PaintPane;
+import javafx.scene.paint.Color;
 
 public class RectangleToolButton extends ToolButton {
     public RectangleToolButton() {
@@ -19,11 +18,9 @@ public class RectangleToolButton extends ToolButton {
     public void onMouseReleased(PaintPane paintPane, double x, double y) {
         Point startPoint = paintPane.getStartPoint();
         Point endPoint = new Point(x, y);
+        Figure figure = new Rectangle(startPoint, endPoint);
         if (startPoint != null && endPoint.getX() >= startPoint.getX() && endPoint.getY() >= startPoint.getY()) {
-            Figure newFigure = new Rectangle(startPoint, endPoint);
-            paintPane.addFigure(newFigure);
-            paintPane.setStartPoint(null);
-            paintPane.redrawCanvas();
+            insertFigure(paintPane, figure);
         }
     }
 }

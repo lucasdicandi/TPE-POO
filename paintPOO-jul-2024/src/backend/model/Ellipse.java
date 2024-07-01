@@ -4,9 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class Ellipse extends Figure {
 
-    protected final Point centerPoint;
-    protected double sMayorAxis;
-    protected double sMinorAxis;
+    private final Point centerPoint;
+    private double sMayorAxis;
+    private double sMinorAxis;
 
     public Ellipse(Point startPoint, Point endPoint) {
         super(startPoint, endPoint);
@@ -32,6 +32,14 @@ public class Ellipse extends Figure {
         return sMinorAxis;
     }
 
+    public void setsMayorAxis(double sMayorAxis) {
+        this.sMayorAxis = sMayorAxis;
+    }
+
+    public void setsMinorAxis(double sMinorAxis) {
+        this.sMinorAxis = sMinorAxis;
+    }
+
     @Override
     public double area() {
         return Math.PI / 4 * sMayorAxis * sMinorAxis;
@@ -54,6 +62,12 @@ public class Ellipse extends Figure {
                 getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
         gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2),
                 getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
+        gc.setFill(getColor());
+    }
+
+    @Override
+    public void move(double deltaX, double deltaY) {
+        draw(deltaX, deltaY);
     }
 
     @Override

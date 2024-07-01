@@ -3,10 +3,46 @@ package frontend.Buttons;
 import backend.model.Figure;
 import backend.model.Point;
 import frontend.PaintPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 public class SelectionToolButton extends ToolButton {
+
+    private double initialX, initialY;
+
     public SelectionToolButton() {
         super("Seleccionar");
+    }
+
+    @Override
+    public void onMousePressed(PaintPane paintPane, double x, double y) {
+        initialX = x;
+        initialY = y;
+        paintPane.setSelectedFigure(null);
+
+        Point point = new Point(x, y);
+        Figure f = paintPane.findFigureAtPoint(point);
+        paintPane.setSelectedFigure(f);
+
+        for (Figure figure : paintPane.getCanvasState().figures()) {
+            if (figure.containsPoint(point)){
+                paintPane.setSelectedFigure(figure);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onMouseDragged(PaintPane paintPane, double x, double y) {
+        Figure selectedFigure = paintPane.getSelectedFigure();
+        if (selectedFigure != null) {
+            double deltaX = x - initialX ;
+            double deltaY = y - initialY ;
+            selectedFigure.move(deltaX, deltaY);
+            initialX = x;
+            initialY = y;
+            paintPane.redrawCanvas();
+        }
     }
 
     @Override
@@ -19,17 +55,8 @@ public class SelectionToolButton extends ToolButton {
     }
 
     @Override
-    public void onMouseDragged(PaintPane paintPane, double x, double y) {
-        Figure selectedFigure = paintPane.getSelectedFigure();
-        Point startPoint = paintPane.getStartPoint();
-
-        if (selectedFigure != null && startPoint != null) {
-            double diffX = (x - startPoint.getX()) / 100;
-            double diffY = (y - startPoint.getY()) / 100;
-            selectedFigure.draw(diffX, diffY);
-            paintPane.redrawCanvas();
-        }
+    public void onMouseReleased(PaintPane paintPane, double x, double y) {
+        Figure f = paintPane.findFigureAtPoint(new Point(x, y));
+        paintPane.setSelectedFigure(f);
     }
-
 }
-
