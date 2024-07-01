@@ -54,7 +54,6 @@ public class Rectangle extends Figure {
 
     @Override
     public void redraw(GraphicsContext gc) {
-        gc.setFill(getColor());
         gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),

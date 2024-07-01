@@ -24,7 +24,6 @@ public class Circle extends Ellipse {
     @Override
     public void redraw(GraphicsContext gc) {
         double diameter = getRadius() * 2;
-        //gc.setFill(getColor());
         gc.fillOval(getCenterPoint().getX() - getRadius(), getCenterPoint().getY() - getRadius(), diameter, diameter);
         gc.strokeOval(getCenterPoint().getX() - getRadius(), getCenterPoint().getY() - getRadius(), diameter, diameter);
     }
