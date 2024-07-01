@@ -95,10 +95,16 @@ public class Ellipse extends Figure {
         ellipse2.setsMayorAxis(halfMajorAxis);
         ellipse2.setsMinorAxis(sMinorAxis/2);
 
-        // Return the new ellipses
         return new Figure[] { ellipse1, ellipse2 };
     }
 
-
-
+    @Override
+    public void moveToCenter(double centerX, double centerY) {
+        centerPoint.setX(centerX);
+        centerPoint.setY(centerY);
+        getStartPoint().setX(centerX - sMayorAxis / 2);
+        getStartPoint().setY(centerY - sMinorAxis / 2);
+        getEndPoint().setX(centerX + sMayorAxis / 2);
+        getEndPoint().setY(centerY + sMinorAxis / 2);
+    }
 }

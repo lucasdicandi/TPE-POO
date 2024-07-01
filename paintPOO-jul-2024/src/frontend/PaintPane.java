@@ -55,7 +55,8 @@ public class PaintPane extends BorderPane {
 				new EllipseToolButton(),
 				new DivideToolButton(this),
 				new DuplicateToolButton(this),
-				new DeleteToolButton(this)
+				new DeleteToolButton(this),
+				new CenterToolButton(this)
 		};
 
 		for (ToolButton tool : toolsArr) {
@@ -166,5 +167,13 @@ public class PaintPane extends BorderPane {
 
 	public CanvasState getCanvasState() {
 		return canvasState;
+	}
+
+	public double getCanvasWidth() {
+		return canvas.getWidth();
+	}
+
+	public double getCanvasHeight() {
+		return canvas.getHeight();
 	}
 }

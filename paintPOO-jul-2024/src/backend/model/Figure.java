@@ -41,4 +41,6 @@ public abstract class Figure {
     public abstract Figure clone();
 
     public abstract Figure[] divide();
+
+    public abstract void moveToCenter(double centerX, double centerY);
 }

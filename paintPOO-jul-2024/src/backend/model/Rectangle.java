@@ -82,4 +82,17 @@ public class Rectangle extends Figure {
 
         return new Figure[] { rect1, rect2 };
     }
+
+    @Override
+    public void moveToCenter(double centerX, double centerY) {
+        double width = bottomRight.getX() - topLeft.getX();
+        double height = bottomRight.getY() - topLeft.getY();
+        double newTopLeftX = centerX - width / 2;
+        double newTopLeftY = centerY - height / 2;
+
+        topLeft.setX(newTopLeftX);
+        topLeft.setY(newTopLeftY);
+        bottomRight.setX(newTopLeftX + width);
+        bottomRight.setY(newTopLeftY + height);
+    }
 }
