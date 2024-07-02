@@ -22,7 +22,10 @@ import javafx.scene.paint.Stop;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Slider;
+import javafx.collections.FXCollections;
+import javafx.scene.control.Label;
 public class PaintPane extends BorderPane {
 	private final CanvasState canvasState;
 	private final Canvas canvas = new Canvas(800, 600);
@@ -38,8 +41,11 @@ public class PaintPane extends BorderPane {
 	private final ColorPicker fillColorPickerSecondary = new ColorPicker(defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
+
+	private final ChoiceBox<LineType> lineTypeChoiceBox = new ChoiceBox<>();
 	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
 
+	private final Slider lineWithSlider = new Slider(1, 10, 5);
 
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
@@ -86,6 +92,38 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
+		lineTypeChoiceBox.getItems().addAll(LineType.values());
+		lineTypeChoiceBox.setValue(LineType.NORMAL);
+		lineTypeChoiceBox.setOnAction(event -> {
+			if(selectedFigure != null) {
+				selectedFigure.setLineType(lineTypeChoiceBox.getValue());
+				redrawCanvas();
+			}
+		});
+
+		lineWithSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+			if (selectedFigure != null) {
+				selectedFigure.setLineWidth(newVal.doubleValue());
+				redrawCanvas();
+			}
+		});
+
+		fillColorPickerPrimary.setOnAction(event ->{
+			if (selectedFigure != null) {
+				selectedFigure.setColor(fillColorPickerPrimary.getValue());
+				redrawCanvas();
+			}
+		});
+
+		fillColorPickerSecondary.setOnAction(event ->{
+			if (selectedFigure != null) {
+				selectedFigure.setSecondaryColor(fillColorPickerSecondary.getValue());
+				redrawCanvas();
+			}
+		});
+
+
+
 		VBox buttonsBox = new VBox(10);
 		for (var toggle : toolsGroup.getToggles()) {
 			buttonsBox.getChildren().add((Node) toggle);
@@ -97,9 +135,19 @@ public class PaintPane extends BorderPane {
 		buttonsBox.setPrefWidth(100);
 
 		buttonsBox.getChildren().add(shadowChoiceBox);
+		buttonsBox.getChildren().add(lineTypeChoiceBox);
 
 		setLeft(buttonsBox);
 		setRight(canvas);
+
+		VBox sidebar = new VBox();
+		buttonsBox.setSpacing(10);
+
+		lineWithSlider.setShowTickMarks(true);
+		lineWithSlider.setShowTickLabels(true);
+
+		buttonsBox.getChildren().addAll(lineWithSlider);
+
 	}
 
 	private void setupCanvasEvents() {
@@ -151,12 +199,15 @@ public class PaintPane extends BorderPane {
 	public void redrawCanvas() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for (Figure figure : canvasState.figures()) {
+			gc.setLineWidth(figure.getLineWidth());
 
 			Color shadowColor = shadowRendererMap.get(figure.getShadowType());
 			gc.setStroke(Color.TRANSPARENT);
 			gc.setFill(shadowColor);
 			FigureRenderer renderer = rendererMap.get(figure.getClass());
 			renderer.renderShadow(figure, gc, shadowColor);
+
+			gc.setLineDashes(figure.getLineType().getDashes());
 
 			RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
 					CycleMethod.NO_CYCLE,
@@ -166,6 +217,7 @@ public class PaintPane extends BorderPane {
 			gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
 			gc.setFill(radialGradient);
 			renderer.render(figure, gc);
+
 
 		}
 	}

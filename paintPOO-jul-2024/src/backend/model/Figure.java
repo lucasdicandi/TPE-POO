@@ -7,8 +7,30 @@ public abstract class Figure {
     private final Point startPoint;
     private final Point endPoint;
     private Color color;
-
     private Color secondaryColor;
+    private ShadowType shadowType = ShadowType.NONE;
+
+    private LineType lineType = LineType.NORMAL;
+
+    private static final double DEFAULT_VALUE_LENGHT = 1;
+
+    private double LineWidth = DEFAULT_VALUE_LENGHT;
+
+    public double getLineWidth() {
+        return LineWidth;
+    }
+
+    public void setLineWidth(double LineWidth) {
+        this.LineWidth = LineWidth;
+    }
+
+    public LineType getLineType() {
+        return lineType;
+    }
+
+    public void setLineType(LineType lineType) {
+        this.lineType = lineType;
+    }
 
     public Color getSecondaryColor() {
         return secondaryColor;
@@ -18,7 +40,7 @@ public abstract class Figure {
         this.secondaryColor = secondaryColor;
     }
 
-    private ShadowType shadowType = ShadowType.NONE;
+
 
 
     public Figure(Point startPoint, Point endPoint) {

@@ -58,6 +58,8 @@ public class Rectangle extends Figure {
 
         Rectangle toReturn = new Rectangle(clonedTopLeft, clonedBottomRight);
         toReturn.setShadowType(this.getShadowType());
+        toReturn.setLineType(this.getLineType());
+        toReturn.setLineWidth(this.getLineWidth());
 
         return toReturn;
     }
@@ -79,6 +81,12 @@ public class Rectangle extends Figure {
 
         rect1.setShadowType(this.getShadowType());
         rect2.setShadowType(this.getShadowType());
+
+        rect1.setLineType(this.getLineType());
+        rect2.setLineType(this.getLineType());
+
+        rect1.setLineWidth(this.getLineWidth());
+        rect2.setLineWidth(this.getLineWidth());
 
         return new Figure[] { rect1, rect2 };
     }

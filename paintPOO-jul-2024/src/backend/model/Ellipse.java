@@ -68,6 +68,8 @@ public class Ellipse extends Figure {
         clonedEllipse.setsMayorAxis(this.sMayorAxis);
         clonedEllipse.setsMinorAxis(this.sMinorAxis);
         clonedEllipse.setShadowType(this.getShadowType());
+        clonedEllipse.setLineType(this.getLineType());
+        clonedEllipse.setLineWidth(this.getLineWidth());
         return clonedEllipse;
     }
 
@@ -94,6 +96,11 @@ public class Ellipse extends Figure {
 
         ellipse1.setShadowType(this.getShadowType());
         ellipse2.setShadowType(this.getShadowType());
+        ellipse1.setLineType(this.getLineType());
+        ellipse2.setLineType(this.getLineType());
+
+        ellipse1.setLineWidth(this.getLineWidth());
+        ellipse2.setLineWidth(this.getLineWidth());
 
         return new Figure[] { ellipse1, ellipse2 };
     }
