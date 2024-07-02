@@ -54,9 +54,4 @@ public class SelectionToolButton extends ToolButton {
         paintPane.redrawCanvas();
     }
 
-    @Override
-    public void onMouseReleased(PaintPane paintPane, double x, double y) {
-        Figure f = paintPane.findFigureAtPoint(new Point(x, y));
-        paintPane.setSelectedFigure(f);
-    }
 }

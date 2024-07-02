@@ -30,7 +30,6 @@ public class PaintPane extends BorderPane {
 	private ToolButton currentTool;
 	private final ToggleGroup toolsGroup = new ToggleGroup();
 	private final ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
-
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 
 
@@ -176,4 +175,6 @@ public class PaintPane extends BorderPane {
 	public double getCanvasHeight() {
 		return canvas.getHeight();
 	}
+
+
 }
