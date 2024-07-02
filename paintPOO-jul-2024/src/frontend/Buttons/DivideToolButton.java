@@ -8,9 +8,6 @@ public class DivideToolButton extends ToolButton{
 
     PaintPane paintPane;
 
-    Point startPointOriginal;
-    Point EndintOriginal;
-
     public DivideToolButton(PaintPane paintPane) {
         super("Dividir");
         this.paintPane = paintPane;
@@ -21,8 +18,8 @@ public class DivideToolButton extends ToolButton{
     public void onMouseClicked(PaintPane paintPane, double x, double y) {
         Figure selectedFigure = paintPane.getSelectedFigure();
         if(selectedFigure != null) {
-            Figure[] dividedFigures = selectedFigure.divide(); // Assuming divide method is implemented correctly
-            paintPane.removeFigure(selectedFigure); // Remove the original figure
+            Figure[] dividedFigures = selectedFigure.divide();
+            paintPane.removeFigure(selectedFigure);
             for (Figure figure : dividedFigures) {
                 paintPane.addFigure(figure);
             }
