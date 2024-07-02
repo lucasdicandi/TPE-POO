@@ -111,6 +111,8 @@ public class PaintPane extends BorderPane {
 		fillColorPickerPrimary.setOnAction(event ->{
 			if (selectedFigure != null) {
 				selectedFigure.setColor(fillColorPickerPrimary.getValue());
+				shadowRendererMap.put(ShadowType.COLORED, fillColorPickerPrimary.getValue().darker());
+				shadowRendererMap.put(ShadowType.COLORED_INVERSE, fillColorPickerPrimary.getValue().darker());
 				redrawCanvas();
 			}
 		});
