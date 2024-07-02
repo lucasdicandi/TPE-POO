@@ -7,15 +7,13 @@ public abstract class Figure {
     private final Point startPoint;
     private final Point endPoint;
     private Color color;
+    private ShadowType shadowType = ShadowType.NONE;
 
 
     public Figure(Point startPoint, Point endPoint) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
     }
-    public abstract double area();
-
-    public abstract double perimeter();
 
     public abstract void draw(double diffX, double  diffY);
 
@@ -41,6 +39,14 @@ public abstract class Figure {
     public abstract Figure clone();
 
     public abstract Figure[] divide();
+
+    public void setShadowType(ShadowType newShadowType){
+        this.shadowType = newShadowType;
+    }
+
+    public ShadowType getShadowType(){
+        return shadowType;
+    }
 
     public abstract void moveToCenter(double centerX, double centerY);
 }

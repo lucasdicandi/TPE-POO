@@ -8,7 +8,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -31,6 +33,10 @@ public class PaintPane extends BorderPane {
 	private final ToggleGroup toolsGroup = new ToggleGroup();
 	private final ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
+	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
+
+	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
+
 
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
@@ -43,6 +49,9 @@ public class PaintPane extends BorderPane {
 		this.rendererMap.put(Rectangle.class, new RectangleRenderer());
 		this.rendererMap.put(Ellipse.class, new EllipseRenderer());
 		this.rendererMap.put(Square.class, new SquareRenderer());
+		shadowRendererMap.put(ShadowType.NONE, Color.TRANSPARENT);
+		shadowRendererMap.put(ShadowType.SIMPLE, Color.GRAY);
+		shadowRendererMap.put(ShadowType.SIMPLE_INVERSE, Color.GRAY);
 	}
 
 	private void initializeTools() {
@@ -65,6 +74,15 @@ public class PaintPane extends BorderPane {
 	}
 
 	private void initializeUI() {
+		shadowChoiceBox.getItems().addAll(ShadowType.values());
+		shadowChoiceBox.setValue(ShadowType.NONE);
+		shadowChoiceBox.setOnAction(event -> {
+			if(selectedFigure != null) {
+				selectedFigure.setShadowType(shadowChoiceBox.getValue());
+				redrawCanvas();
+			}
+		});
+
 		VBox buttonsBox = new VBox(10);
 		for (var toggle : toolsGroup.getToggles()) {
 			buttonsBox.getChildren().add((Node) toggle);
@@ -73,6 +91,9 @@ public class PaintPane extends BorderPane {
 		buttonsBox.setPadding(new Insets(5));
 		buttonsBox.setStyle("-fx-background-color: #999");
 		buttonsBox.setPrefWidth(100);
+
+		buttonsBox.getChildren().add(shadowChoiceBox);
+
 		setLeft(buttonsBox);
 		setRight(canvas);
 	}
@@ -112,6 +133,12 @@ public class PaintPane extends BorderPane {
 
 	public void addFigure(Figure figure) {
 		figure.setColor(fillColorPicker.getValue());
+
+		shadowRendererMap.put(ShadowType.COLORED, fillColorPicker.getValue().darker());
+		shadowRendererMap.put(ShadowType.COLORED_INVERSE, fillColorPicker.getValue().darker());
+
+		shadowChoiceBox.setValue(ShadowType.NONE);
+
 		canvasState.addFigure(figure);
 		redrawCanvas();
 	}
@@ -119,10 +146,21 @@ public class PaintPane extends BorderPane {
 	public void redrawCanvas() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for (Figure figure : canvasState.figures()) {
+
+			//render sombra//
+			Color shadowColor = shadowRendererMap.get(figure.getShadowType());
+			gc.setStroke(Color.TRANSPARENT);
+			gc.setFill(shadowColor); //cambiar por shadow deseada
+			FigureRenderer renderer = rendererMap.get(figure.getClass());
+			renderer.renderShadow(figure, gc, shadowColor);
+			////////////////////////////
+
+
+			//render figura
 			gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
 			gc.setFill(figure.getColor());
-			FigureRenderer renderer = rendererMap.get(figure.getClass());
 			renderer.render(figure, gc);
+
 		}
 	}
 

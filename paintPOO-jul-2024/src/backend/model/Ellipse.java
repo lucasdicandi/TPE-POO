@@ -1,6 +1,7 @@
 package backend.model;
 
 
+import javafx.scene.paint.Color;
 
 public class Ellipse extends Figure {
 
@@ -40,20 +41,17 @@ public class Ellipse extends Figure {
         this.sMinorAxis = sMinorAxis;
     }
 
-    @Override
-    public double area() {
-        return Math.PI / 4 * sMayorAxis * sMinorAxis;
-    }
-
-    @Override
-    public double perimeter() {
-        return Math.PI / 2 * (sMayorAxis + sMinorAxis);
-    }
 
     @Override
     public void draw(double diffX, double diffY) {
+//        centerPoint.setX(getCenterPoint().getX() + diffX);
+//        centerPoint.setY(getCenterPoint().getY() + diffY);
         centerPoint.setX(getCenterPoint().getX() + diffX);
         centerPoint.setY(getCenterPoint().getY() + diffY);
+        getStartPoint().setX(getStartPoint().getX() + diffX);
+        getStartPoint().setY(getStartPoint().getY() + diffY);
+        getEndPoint().setX(getEndPoint().getX() + diffX);
+        getEndPoint().setY(getEndPoint().getY() + diffY);
     }
 
 
@@ -71,6 +69,7 @@ public class Ellipse extends Figure {
         Ellipse clonedEllipse = new Ellipse(clonedStartPoint, clonedEndPoint);
         clonedEllipse.setsMayorAxis(this.sMayorAxis);
         clonedEllipse.setsMinorAxis(this.sMinorAxis);
+        clonedEllipse.setShadowType(this.getShadowType());
         return clonedEllipse;
     }
 
@@ -94,6 +93,9 @@ public class Ellipse extends Figure {
         ellipse1.setsMinorAxis(sMinorAxis/2);
         ellipse2.setsMayorAxis(halfMajorAxis);
         ellipse2.setsMinorAxis(sMinorAxis/2);
+
+        ellipse1.setShadowType(this.getShadowType());
+        ellipse2.setShadowType(this.getShadowType());
 
         return new Figure[] { ellipse1, ellipse2 };
     }

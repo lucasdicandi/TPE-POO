@@ -21,6 +21,7 @@ public class DuplicateToolButton extends ToolButton {
         Figure selectedFigure = paintPane.getSelectedFigure();
         if(selectedFigure != null){
             Figure duplicatedFigure = selectedFigure.clone();
+            paintPane.setSelectedFigure(null);
             duplicatedFigure.draw(OFFSET, OFFSET);
             paintPane.addFigure(duplicatedFigure);
             paintPane.redrawCanvas();

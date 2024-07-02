@@ -1,6 +1,8 @@
 package backend.model;
 
 
+import javafx.scene.paint.Color;
+
 public class Rectangle extends Figure {
 
     private final Point topLeft, bottomRight;
@@ -32,15 +34,6 @@ public class Rectangle extends Figure {
         return Math.abs(topLeft.getY() - bottomRight.getY());
     }
 
-    @Override
-    public double area() {
-        return base() * height();
-    }
-
-    @Override
-    public double perimeter() {
-        return (base() + height()) * 2;
-    }
 
     @Override
     public void draw(double diffX, double diffY) {
@@ -59,10 +52,14 @@ public class Rectangle extends Figure {
 
 
     @Override
-    public Figure clone() {
+    public Rectangle clone() {
         Point clonedTopLeft = new Point(topLeft.getX(), topLeft.getY());
         Point clonedBottomRight = new Point(bottomRight.getX(), bottomRight.getY());
-        return new Rectangle(clonedTopLeft, clonedBottomRight);
+
+        Rectangle toReturn = new Rectangle(clonedTopLeft, clonedBottomRight);
+        toReturn.setShadowType(this.getShadowType());
+
+        return toReturn;
     }
 
 
@@ -79,6 +76,9 @@ public class Rectangle extends Figure {
 
         Rectangle rect1 = new Rectangle(newTopLeft1, newBottomRight1);
         Rectangle rect2 = new Rectangle(newTopLeft2, newBottomRight2);
+
+        rect1.setShadowType(this.getShadowType());
+        rect2.setShadowType(this.getShadowType());
 
         return new Figure[] { rect1, rect2 };
     }

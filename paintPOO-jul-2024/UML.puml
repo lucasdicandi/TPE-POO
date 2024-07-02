@@ -1,114 +1,218 @@
 @startuml
-'https://plantuml.com/sequence-diagram
 
-@startuml
+package backend.model {
+    class Point {
+        - double x
+        - double y
+        + double getX()
+        + double getY()
+        + void setX(double x)
+        + void setY(double y)
+        + String toString()
+    }
 
-class Point {
-  - double x
-  - double y
-  + Point(double x, double y)
-  + double getX()
-  + double getY()
-  + void setX(double x)
-  + void setY(double y)
+    abstract class Figure {
+        - Point startPoint
+        - Point endPoint
+        + Figure(Point startPoint, Point endPoint)
+        + String toString()
+        + Point getStartPoint()
+        + Point getEndPoint()
+        + abstract double area()
+        + abstract double perimeter()
+        + abstract void draw(double diffX, double diffY)
+        + abstract boolean containsPoint(Point point)
+    }
+
+    class Ellipse extends Figure {
+        - Point centerPoint
+        - double sMayorAxis
+        - double sMinorAxis
+        + Ellipse(Point startPoint, Point endPoint)
+        + String toString()
+        + Point getCenterPoint()
+        + double getsMayorAxis()
+        + double getsMinorAxis()
+        + void setsMayorAxis(double sMayorAxis)
+        + void setsMinorAxis(double sMinorAxis)
+        + double area()
+        + double perimeter()
+        + void draw(double diffX, double diffY)
+        + boolean containsPoint(Point point)
+        + Ellipse clone()
+    }
+
+    class Circle extends Ellipse {
+        - double radius
+        + Circle(Point startPoint, Point endPoint)
+        + String toString()
+        + double getRadius()
+        + boolean containsPoint(Point point)
+    }
+
+    class Rectangle extends Figure {
+        + Rectangle(Point startPoint, Point endPoint)
+        + String toString()
+        + double area()
+        + double perimeter()
+        + void draw(double diffX, double diffY)
+        + boolean containsPoint(Point point)
+    }
+
+    class Square extends Rectangle {
+        + Square(Point startPoint, Point endPoint)
+        + String toString()
+        + boolean containsPoint(Point point)
+    }
 }
 
-interface Figure {
-  - Point origin
-  + Figure(Point origin)
-  + Point getOrigin()
-  + void setOrigin(Point origin)
-  + abstract double getArea()
-  + abstract double getPerimeter()
+package backend {
+    class CanvasState {
+        - List<Figure> list
+        + void addFigure(Figure figure)
+        + void deleteFigure(Figure figure)
+        + Iterable<Figure> figures()
+    }
 }
 
-class Rectangle implements Figure {
-  - double width
-  - double height
-  + Rectangle(Point origin, double width, double height)
-  + double getWidth()
-  + double getHeight()
-  + void setWidth(double width)
-  + void setHeight(double height)
-  + double getArea()
-  + double getPerimeter()
+package frontend {
+    class AppLauncher {
+        + void main(String[] args)
+        + void start(Stage primaryStage)
+    }
+
+    class AppMenuBar {
+        + AppMenuBar()
+    }
+
+    class MainFrame {
+        - CanvasState canvasState
+        - PaintPane paintPane
+        - AppMenuBar appMenuBar
+        - StatusPane statusPane
+        + MainFrame(CanvasState canvasState)
+    }
+
+    class PaintPane {
+        - CanvasState canvasState
+        - GraphicsContext gc
+        - Figure selectedFigure
+        - Point startPoint
+        - Color lineColor
+        + PaintPane(CanvasState canvasState, StatusPane statusPane)
+        + void redrawCanvas()
+        + GraphicsContext getGc()
+        + Figure findFigureAtPoint(Point point)
+        + void removeFigure(Figure figure)
+        + double getCanvasWidth()
+        + double getCanvasHeight()
+    }
+
+    class StatusPane {
+        - Label statusLabel
+        + StatusPane()
+        + void updateStatus(String text)
+    }
 }
 
-class Square extends Rectangle {
-  + Square(Point origin, double side)
-  + double getSide()
-  + void setSide(double side)
+package frontend.Renders {
+    abstract class FigureRenderer {
+        + abstract void render(Figure figure, GraphicsContext gc)
+    }
+
+    class CircleRenderer extends FigureRenderer {
+        + void render(Figure figure, GraphicsContext gc)
+    }
+
+    class EllipseRenderer extends FigureRenderer {
+        + void render(Figure figure, GraphicsContext gc)
+    }
+
+    class RectangleRenderer extends FigureRenderer {
+        + void render(Figure figure, GraphicsContext gc)
+    }
+
+    class SquareRenderer extends RectangleRenderer {
+    }
 }
 
-class Circle extends Ellipse {
-  - double radius
-  + Circle(Point origin, double radius)
-  + double getRadius()
-  + void setRadius(double radius)
-  + double getArea()
-  + double getPerimeter()
+package frontend.Buttons {
+    abstract class ToolButton extends ToggleButton {
+        + ToolButton(String text)
+        + void onMousePressed(PaintPane paintPane, double x, double y)
+        + void onMouseReleased(PaintPane paintPane, double x, double y)
+        + void onMouseClicked(PaintPane paintPane, double x, double y)
+        + void onMouseDragged(PaintPane paintPane, double x, double y)
+    }
+
+    class DeleteToolButton extends ToolButton {
+        + DeleteToolButton(PaintPane paintPane)
+        + void onMouseClicked(PaintPane paintPane, double x, double y)
+    }
+
+    class DivideToolButton extends ToolButton {
+        + DivideToolButton(PaintPane paintPane)
+        + void onMouseClicked(PaintPane paintPane, double x, double y)
+    }
+
+    class DuplicateToolButton extends ToolButton {
+        + DuplicateToolButton(PaintPane paintPane)
+        + void onMouseClicked(PaintPane paintPane, double x, double y)
+    }
+
+    class EllipseToolButton extends ToolButton {
+        + EllipseToolButton()
+        + void onMousePressed(PaintPane paintPane, double x, double y)
+        + void onMouseReleased(PaintPane paintPane, double x, double y)
+    }
+
+    class MoveToCenterToolButton extends ToolButton {
+        + MoveToCenterToolButton(PaintPane paintPane)
+        + void onMouseClicked(PaintPane paintPane, double x, double y)
+    }
+
+    class RectangleToolButton extends ToolButton {
+        + RectangleToolButton()
+        + void onMousePressed(PaintPane paintPane, double x, double y)
+        + void onMouseReleased(PaintPane paintPane, double x, double y)
+    }
+
+    class SelectionToolButton extends ToolButton {
+        + SelectionToolButton()
+        + void onMouseClicked(PaintPane paintPane, double x, double y)
+    }
+
+    class ShadowToolButton extends ChoiceBox {
+    }
+
+    class SquareToolButton extends ToolButton {
+        + SquareToolButton()
+        + void onMousePressed(PaintPane paintPane, double x, double y)
+        + void onMouseReleased(PaintPane paintPane, double x, double y)
+    }
+
+    class CircleToolButton extends ToolButton {
+        + CircleToolButton()
+        + void onMousePressed(PaintPane paintPane, double x, double y)
+        + void onMouseReleased(PaintPane paintPane, double x, double y)
+    }
+
+    class CenterToolButton extends ToolButton {
+        + CenterToolButton(PaintPane paintPane)
+        + void onMouseClicked(PaintPane paintPane, double x, double y)
+    }
 }
 
-class Ellipse implements Figure {
-  - double majorAxis
-  - double minorAxis
-  + Ellipse(Point origin, double majorAxis, double minorAxis)
-  + double getMajorAxis()
-  + double getMinorAxis()
-  + void setMajorAxis(double majorAxis)
-  + void setMinorAxis(double minorAxis)
-  + double getArea()
-  + double getPerimeter()
-}
+frontend.AppLauncher --> backend.CanvasState
+frontend.MainFrame --> backend.CanvasState
+frontend.PaintPane --> backend.CanvasState
+frontend.PaintPane --> frontend.StatusPane
+frontend.MainFrame --> frontend.PaintPane
+frontend.MainFrame --> frontend.AppMenuBar
+frontend.MainFrame --> frontend.StatusPane
+frontend.PaintPane --> backend.model.Figure
+frontend.PaintPane --> backend.model.Point
+frontend.PaintPane --> frontend.Renders.FigureRenderer
 
-class CanvasState {
-  - List<Figure> figures
-  + CanvasState()
-  + void addFigure(Figure figure)
-  + void removeFigure(Figure figure)
-  + List<Figure> getFigures()
-}
-
-class AppLauncher {
-  + static void main(String[] args)
-}
-
-class AppMenuBar {
-  - JMenu fileMenu
-  - JMenu editMenu
-  + AppMenuBar(MainFrame frame)
-}
-
-class MainFrame {
-  - PaintPane paintPane
-  - StatusPane statusPane
-  - AppMenuBar menuBar
-  + MainFrame()
-}
-
-class PaintPane {
-  - CanvasState canvasState
-  + PaintPane(CanvasState state)
-  + void paintComponent(Graphics g)
-}
-
-class StatusPane {
-  + StatusPane()
-  + void updateStatus(String status)
-}
-
-
-
-
-
-
-
-CanvasState o-- Figure
-PaintPane --> CanvasState
-MainFrame --> PaintPane
-MainFrame --> StatusPane
-MainFrame --> AppMenuBar
-AppMenuBar --> MainFrame
 
 @enduml
-
