@@ -21,7 +21,6 @@ public class ShadowChoiceBox extends ChoiceBox<ShadowType> {
     private void onShadowTypeChanged(PaintPane paintPane, ShadowType newShadowType) {
         if (selectedFigure != null) {
             selectedFigure.setShadowType(newShadowType);
-           // paintPane.redrawCanvas();
         }
     }
 

@@ -147,16 +147,12 @@ public class PaintPane extends BorderPane {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for (Figure figure : canvasState.figures()) {
 
-			//render sombra//
 			Color shadowColor = shadowRendererMap.get(figure.getShadowType());
 			gc.setStroke(Color.TRANSPARENT);
-			gc.setFill(shadowColor); //cambiar por shadow deseada
+			gc.setFill(shadowColor);
 			FigureRenderer renderer = rendererMap.get(figure.getClass());
 			renderer.renderShadow(figure, gc, shadowColor);
-			////////////////////////////
 
-
-			//render figura
 			gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
 			gc.setFill(figure.getColor());
 			renderer.render(figure, gc);

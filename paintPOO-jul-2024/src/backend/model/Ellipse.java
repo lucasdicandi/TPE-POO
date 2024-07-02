@@ -44,8 +44,6 @@ public class Ellipse extends Figure {
 
     @Override
     public void draw(double diffX, double diffY) {
-//        centerPoint.setX(getCenterPoint().getX() + diffX);
-//        centerPoint.setY(getCenterPoint().getY() + diffY);
         centerPoint.setX(getCenterPoint().getX() + diffX);
         centerPoint.setY(getCenterPoint().getY() + diffY);
         getStartPoint().setX(getStartPoint().getX() + diffX);
