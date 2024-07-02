@@ -15,6 +15,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +34,10 @@ public class PaintPane extends BorderPane {
 	private final StatusPane statusPane;
 	private ToolButton currentTool;
 	private final ToggleGroup toolsGroup = new ToggleGroup();
-	private final ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
+	private final ColorPicker fillColorPickerPrimary = new ColorPicker(defaultFillColor);
+	private final ColorPicker fillColorPickerSecondary = new ColorPicker(defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
-
 	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
 
 
@@ -87,7 +90,8 @@ public class PaintPane extends BorderPane {
 		for (var toggle : toolsGroup.getToggles()) {
 			buttonsBox.getChildren().add((Node) toggle);
 		}
-		buttonsBox.getChildren().add(fillColorPicker);
+		buttonsBox.getChildren().add(fillColorPickerPrimary);
+		buttonsBox.getChildren().add(fillColorPickerSecondary);
 		buttonsBox.setPadding(new Insets(5));
 		buttonsBox.setStyle("-fx-background-color: #999");
 		buttonsBox.setPrefWidth(100);
@@ -132,10 +136,11 @@ public class PaintPane extends BorderPane {
 	}
 
 	public void addFigure(Figure figure) {
-		figure.setColor(fillColorPicker.getValue());
+		figure.setColor(fillColorPickerPrimary.getValue());
+		figure.setSecondaryColor(fillColorPickerSecondary.getValue());
 
-		shadowRendererMap.put(ShadowType.COLORED, fillColorPicker.getValue().darker());
-		shadowRendererMap.put(ShadowType.COLORED_INVERSE, fillColorPicker.getValue().darker());
+		shadowRendererMap.put(ShadowType.COLORED, fillColorPickerPrimary.getValue().darker());
+		shadowRendererMap.put(ShadowType.COLORED_INVERSE, fillColorPickerPrimary.getValue().darker());
 
 		shadowChoiceBox.setValue(ShadowType.NONE);
 
@@ -153,8 +158,13 @@ public class PaintPane extends BorderPane {
 			FigureRenderer renderer = rendererMap.get(figure.getClass());
 			renderer.renderShadow(figure, gc, shadowColor);
 
+			RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
+					CycleMethod.NO_CYCLE,
+					new Stop(0, figure.getColor()),
+					new Stop(1, figure.getSecondaryColor()));
+
 			gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
-			gc.setFill(figure.getColor());
+			gc.setFill(radialGradient);
 			renderer.render(figure, gc);
 
 		}

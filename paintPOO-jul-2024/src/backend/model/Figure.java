@@ -7,6 +7,17 @@ public abstract class Figure {
     private final Point startPoint;
     private final Point endPoint;
     private Color color;
+
+    private Color secondaryColor;
+
+    public Color getSecondaryColor() {
+        return secondaryColor;
+    }
+
+    public void setSecondaryColor(Color secondaryColor) {
+        this.secondaryColor = secondaryColor;
+    }
+
     private ShadowType shadowType = ShadowType.NONE;
 
 
@@ -33,7 +44,7 @@ public abstract class Figure {
     }
 
     public Color getColor() {
-        return color;
+       return color;
     }
 
     public abstract Figure clone();
