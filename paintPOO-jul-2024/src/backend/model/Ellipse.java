@@ -15,7 +15,6 @@ public class Ellipse extends Figure {
         this.sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
         this.sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
     }
-
     @Override
     public String toString() {
         return String.format("Elipse [Centro: %s, DMayor: %.2f, DMenor: %.2f]", centerPoint, sMayorAxis, sMinorAxis);
@@ -51,7 +50,6 @@ public class Ellipse extends Figure {
         getEndPoint().setX(getEndPoint().getX() + diffX);
         getEndPoint().setY(getEndPoint().getY() + diffY);
     }
-
 
     @Override
     public boolean containsPoint(Point point) {

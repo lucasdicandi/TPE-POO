@@ -1,5 +1,4 @@
 package frontend;
-
 import backend.CanvasState;
 import backend.model.*;
 import frontend.Buttons.*;
@@ -41,12 +40,9 @@ public class PaintPane extends BorderPane {
 	private final ColorPicker fillColorPickerSecondary = new ColorPicker(defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
-
 	private final ChoiceBox<LineType> lineTypeChoiceBox = new ChoiceBox<>();
 	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
-
 	private final Slider lineWithSlider = new Slider(1, 10, 5);
-
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
@@ -62,7 +58,6 @@ public class PaintPane extends BorderPane {
 		shadowRendererMap.put(ShadowType.SIMPLE, Color.GRAY);
 		shadowRendererMap.put(ShadowType.SIMPLE_INVERSE, Color.GRAY);
 	}
-
 	private void initializeTools() {
 		ToolButton[] toolsArr = {
 				new SelectionToolButton(),
@@ -81,7 +76,6 @@ public class PaintPane extends BorderPane {
 			tool.setOnAction(event -> currentTool = tool);
 		}
 	}
-
 	private void initializeUI() {
 		shadowChoiceBox.getItems().addAll(ShadowType.values());
 		shadowChoiceBox.setValue(ShadowType.NONE);
@@ -123,8 +117,6 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
-
-
 
 		VBox buttonsBox = new VBox(10);
 		for (var toggle : toolsGroup.getToggles()) {
@@ -188,12 +180,9 @@ public class PaintPane extends BorderPane {
 	public void addFigure(Figure figure) {
 		figure.setColor(fillColorPickerPrimary.getValue());
 		figure.setSecondaryColor(fillColorPickerSecondary.getValue());
-
 		shadowRendererMap.put(ShadowType.COLORED, fillColorPickerPrimary.getValue().darker());
 		shadowRendererMap.put(ShadowType.COLORED_INVERSE, fillColorPickerPrimary.getValue().darker());
-
 		shadowChoiceBox.setValue(ShadowType.NONE);
-
 		canvasState.addFigure(figure);
 		redrawCanvas();
 	}
@@ -202,25 +191,19 @@ public class PaintPane extends BorderPane {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for (Figure figure : canvasState.figures()) {
 			gc.setLineWidth(figure.getLineWidth());
-
 			Color shadowColor = shadowRendererMap.get(figure.getShadowType());
 			gc.setStroke(Color.TRANSPARENT);
 			gc.setFill(shadowColor);
 			FigureRenderer renderer = rendererMap.get(figure.getClass());
 			renderer.renderShadow(figure, gc, shadowColor);
-
 			gc.setLineDashes(figure.getLineType().getDashes());
-
 			RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
 					CycleMethod.NO_CYCLE,
 					new Stop(0, figure.getColor()),
 					new Stop(1, figure.getSecondaryColor()));
-
 			gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
 			gc.setFill(radialGradient);
 			renderer.render(figure, gc);
-
-
 		}
 	}
 
@@ -236,43 +219,32 @@ public class PaintPane extends BorderPane {
 		}
 		return null;
 	}
-
 	public Point getStartPoint() {
 		return startPoint;
 	}
-
 	public void setStartPoint(Point startPoint) {
 		this.startPoint = startPoint;
 	}
-
 	public Figure getSelectedFigure() {
 		return selectedFigure;
 	}
-
 	public void setSelectedFigure(Figure selectedFigure) {
 		this.selectedFigure = selectedFigure;
 	}
-
 	public StatusPane getStatusPane() {
 		return statusPane;
 	}
-
 	public void removeFigure(Figure figure) {
 		canvasState.deleteFigure(figure);
 		redrawCanvas();
 	}
-
 	public CanvasState getCanvasState() {
 		return canvasState;
 	}
-
 	public double getCanvasWidth() {
 		return canvas.getWidth();
 	}
-
 	public double getCanvasHeight() {
 		return canvas.getHeight();
 	}
-
-
 }

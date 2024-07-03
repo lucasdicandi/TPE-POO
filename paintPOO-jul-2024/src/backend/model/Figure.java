@@ -9,11 +9,8 @@ public abstract class Figure {
     private Color color;
     private Color secondaryColor;
     private ShadowType shadowType = ShadowType.NONE;
-
     private LineType lineType = LineType.NORMAL;
-
     private static final double DEFAULT_VALUE_LENGHT = 1;
-
     private double LineWidth = DEFAULT_VALUE_LENGHT;
 
     public double getLineWidth() {
@@ -39,8 +36,6 @@ public abstract class Figure {
     public void setSecondaryColor(Color secondaryColor) {
         this.secondaryColor = secondaryColor;
     }
-
-
 
 
     public Figure(Point startPoint, Point endPoint) {
