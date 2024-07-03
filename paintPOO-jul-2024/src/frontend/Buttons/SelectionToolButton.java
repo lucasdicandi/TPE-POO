@@ -51,8 +51,17 @@ public class SelectionToolButton extends ToolButton {
         Figure figure = paintPane.findFigureAtPoint(point);
         paintPane.setSelectedFigure(figure);
         paintPane.getStatusPane().updateStatus(figure != null ? "Selected: " + figure : "No figure found");
+
+        if(figure != null) {
+            paintPane.getLayerChoiceBox().setValue("Capa %d".formatted(figure.getLayer()));
+        }
         paintPane.redrawCanvas();
     }
+    @Override
+    public void onMouseReleased(PaintPane paintPane, double x, double y) {
+        paintPane.setSelectedFigure(null);
+    }
+
 
 
 

@@ -12,6 +12,24 @@ public abstract class Figure {
     private LineType lineType = LineType.NORMAL;
     private static final double DEFAULT_VALUE_LENGHT = 1;
     private double LineWidth = DEFAULT_VALUE_LENGHT;
+    private int layer = 1;
+
+    private boolean showable = true;
+
+    public boolean isShowable() {
+        return showable;
+    }
+
+    public void setShow(boolean show) {
+        this.showable = show;
+    }
+
+    public void setLayer(int layer) {
+        this.layer = layer;
+    }
+    public int getLayer(){
+        return this.layer;
+    }
 
     public double getLineWidth() {
         return LineWidth;

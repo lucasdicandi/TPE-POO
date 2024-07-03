@@ -37,10 +37,12 @@ public class Rectangle extends Figure {
 
     @Override
     public void draw(double diffX, double diffY) {
-        topLeft.setX(getTopLeft().getX() + diffX);
-        bottomRight.setX(getBottomRight().getX() + diffX);
-        topLeft.setY(getTopLeft().getY() + diffY);
-        bottomRight.setY(getBottomRight().getY() + diffY);
+        if(isShowable()) {
+            topLeft.setX(getTopLeft().getX() + diffX);
+            bottomRight.setX(getBottomRight().getX() + diffX);
+            topLeft.setY(getTopLeft().getY() + diffY);
+            bottomRight.setY(getBottomRight().getY() + diffY);
+        }
     }
 
 

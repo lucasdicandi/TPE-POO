@@ -43,12 +43,14 @@ public class Ellipse extends Figure {
 
     @Override
     public void draw(double diffX, double diffY) {
-        centerPoint.setX(getCenterPoint().getX() + diffX);
-        centerPoint.setY(getCenterPoint().getY() + diffY);
-        getStartPoint().setX(getStartPoint().getX() + diffX);
-        getStartPoint().setY(getStartPoint().getY() + diffY);
-        getEndPoint().setX(getEndPoint().getX() + diffX);
-        getEndPoint().setY(getEndPoint().getY() + diffY);
+        if(isShowable()) {
+            centerPoint.setX(getCenterPoint().getX() + diffX);
+            centerPoint.setY(getCenterPoint().getY() + diffY);
+            getStartPoint().setX(getStartPoint().getX() + diffX);
+            getStartPoint().setY(getStartPoint().getY() + diffY);
+            getEndPoint().setX(getEndPoint().getX() + diffX);
+            getEndPoint().setY(getEndPoint().getY() + diffY);
+        }
     }
 
     @Override
