@@ -4,6 +4,7 @@ import backend.model.*;
 import frontend.Buttons.ToolButton.*;
 import frontend.Renders.*;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -152,6 +153,7 @@ public class PaintPane extends BorderPane {
 
 	private void renderHBox(HBox topBar){
 		topBar.setPadding(new Insets(5));
+		topBar.setAlignment(Pos.CENTER);
 		topBar.setStyle("-fx-background-color: #999");
 
 		layersMap.put("Capa 1", 1);
@@ -170,16 +172,18 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
-		AddLayerToolButton addLayerButton = new AddLayerToolButton(this);
-
-		DeleteLayerToolButton deleteLayerButton = new DeleteLayerToolButton(this);
-
 		ToggleGroup visibilityGroup = new ToggleGroup();
 		RadioButton showLayerButton = new RadioButton("Mostrar");
 		RadioButton hideLayerButton = new RadioButton("Ocultar");
 		showLayerButton.setToggleGroup(visibilityGroup);
 		hideLayerButton.setToggleGroup(visibilityGroup);
 		showLayerButton.setSelected(true);
+
+		AddLayerToolButton addLayerButton = new AddLayerToolButton(this);
+
+		DeleteLayerToolButton deleteLayerButton = new DeleteLayerToolButton(this);
+
+
 
 		visibilityGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
 			if (newToggle != null) {
@@ -208,10 +212,10 @@ public class PaintPane extends BorderPane {
 		topBar.getChildren().addAll(
 				new Label("Capas:"),
 				layerChoiceBox,
-				addLayerButton,
-				deleteLayerButton,
 				showLayerButton,
-				hideLayerButton
+				hideLayerButton,
+				addLayerButton,
+				deleteLayerButton
 		);
 	}
 
