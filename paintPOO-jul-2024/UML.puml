@@ -181,7 +181,9 @@ package frontend {
         }
 
         class SquareToolButton extends ToolButton {
-            // Attributes and methods specific to SquareToolButton
+            +SquareToolButton()
+                        +onMousePressed(PaintPane paintPane, double x, double y)
+                        +onMouseReleased(PaintPane paintPane, double x, double y)
         }
 
         class CenterToolButton extends ToolButton {
@@ -191,37 +193,56 @@ package frontend {
         }
 
         class MoveToCenterToolButton extends ToolButton {
-            // Attributes and methods specific to MoveToCenterToolButton
+            +MoveToCenterToolButton()
         }
 
         class ShadowChoiceBox extends Button {
-            // Attributes and methods specific to ShadowChoiceBox
+            +ShadowChoiceBox(PaintPane paintPane)
+            -onShadowTypeChanged(PaintPane paintPane, ShadowType newShadowType)
+            -Figure selectedFigure
+            +setSelectedShadow(Figure figure)
         }
 
         class DuplicateToolButton extends ToolButton {
-            // Attributes and methods specific to DuplicateToolButton
+            -int OFFSET
+            -PaintPane paintPane
+                        +DivideToolButton(PaintPane paintPane)
+                        +onMouseClicked(PaintPane paintPane, double x, double y)
         }
 
         class CircleToolButton extends ToolButton {
-            // Attributes and methods specific to CircleToolButton
+            +CircleToolButton()
+                        +onMousePressed(PaintPane paintPane, double x, double y)
+                        +onMouseReleased(PaintPane paintPane, double x, double y)
         }
 
         class DivideToolButton extends ToolButton {
             -PaintPane paintPane
-            +CenterToolButton(PaintPane paintPane)
-                        +onMouseClicked(PaintPane paintPane, double x, double y)
-                        }
+            +DivideToolButton(PaintPane paintPane)
+            +onMouseClicked(PaintPane paintPane, double x, double y)
+        }
 
         class EllipseToolButton extends ToolButton {
-            // Attributes and methods specific to EllipseToolButton
+            +EllipseToolButton()
+            +onMousePressed(PaintPane paintPane, double x, double y)
+            +onMouseReleased(PaintPane paintPane, double x, double y)
         }
 
         class SelectionToolButton extends ToolButton {
-            // Attributes and methods specific to SelectionToolButton
+            -double initialX
+            -double initialY
+            +SelectionToolButton()
+            +onMousePressed(PaintPane paintPane, double x, double y)
+            +onMouseReleased(PaintPane paintPane, double x, double y)
+            +onMouseClicked(PaintPane paintPane, double x, double y)
+            +onMouseDragged(PaintPane paintPane, double x, double y)
+
         }
 
         class RectangleToolButton extends ToolButton {
-            // Attributes and methods specific to RectangleToolButton
+            +RectangleToolButton()
+            +onMousePressed(PaintPane paintPane, double x, double y)
+                        +onMouseReleased(PaintPane paintPane, double x, double y)
         }
     }
 

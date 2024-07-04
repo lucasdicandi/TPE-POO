@@ -43,7 +43,6 @@ public class PaintPane extends BorderPane {
 	private static final int INITIAL_LAYER = 4;
 	private int nextLayerNumber = INITIAL_LAYER;
 
-
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
@@ -174,35 +173,9 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
+		addLayerToolButton addLayerButton = new addLayerToolButton(this);
 
-		Button addLayerButton = new Button("Agregar Capa");
-
-		addLayerButton.setOnAction(event -> {
-			String newLayer = "Capa " + nextLayerNumber;
-			layersMap.put(newLayer, nextLayerNumber++);
-			layerChoiceBox.getItems().add(newLayer);
-			layerChoiceBox.setValue(newLayer);
-			layerChoiceBox.setValue("Capa 1");
-			redrawCanvas();
-		});
-
-		Button deleteLayerButton = new Button("Eliminar Capa");
-
-		deleteLayerButton.setOnAction(event -> {
-			String selectedLayer = layerChoiceBox.getValue();
-			if (!selectedLayer.equals("Capa 1") && !selectedLayer.equals("Capa 2") && !selectedLayer.equals("Capa 3")) {
-				layersMap.remove(selectedLayer);
-				layerChoiceBox.getItems().remove(selectedLayer);
-				for(Figure figure : canvasState.figures()) {
-					if (Objects.equals(layerChoiceBox.getValue(), "Capa " + figure.getLayer())){
-						canvasState.deleteFigure(figure);
-					}
-				}
-				redrawCanvas();
-				layerChoiceBox.setValue("Capa 1");
-				redrawCanvas();
-			}
-		});
+		deleteLayerToolButton deleteLayerButton = new deleteLayerToolButton(this);
 
 		ToggleGroup visibilityGroup = new ToggleGroup();
 		RadioButton showLayerButton = new RadioButton("Mostrar");
@@ -337,6 +310,17 @@ public class PaintPane extends BorderPane {
 
 	//setters and getters
 
+	public int getNextLayerNumber() {
+		return nextLayerNumber;
+	}
+
+	public void incrementNextLayerNumber() {
+		nextLayerNumber++;
+	}
+
+	public Map<String, Integer> getLayersMap() {
+		return layersMap;
+	}
 	public ChoiceBox<String> getLayerChoiceBox() {
 		return layerChoiceBox;
 	}
