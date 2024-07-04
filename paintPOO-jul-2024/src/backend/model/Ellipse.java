@@ -70,6 +70,10 @@ public class Ellipse extends Figure {
         clonedEllipse.setShadowType(this.getShadowType());
         clonedEllipse.setLineType(this.getLineType());
         clonedEllipse.setLineWidth(this.getLineWidth());
+        clonedEllipse.setLayer(this.getLayer());
+        clonedEllipse.setColor(this.getColor());
+        clonedEllipse.setSecondaryColor(this.getSecondaryColor());
+
         return clonedEllipse;
     }
 

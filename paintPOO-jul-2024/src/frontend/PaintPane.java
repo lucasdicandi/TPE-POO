@@ -18,9 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
-
 import java.util.*;
-
 import javafx.scene.control.ChoiceBox;
 import javafx.collections.FXCollections;
 
@@ -36,6 +34,15 @@ public class PaintPane extends BorderPane {
 	private ToolButton currentTool;
 	private final ToggleGroup toolsGroup = new ToggleGroup();
 	private final ColorPicker fillColorPickerPrimary = new ColorPicker(defaultFillColor);
+
+	public ColorPicker getFillColorPickerPrimary() {
+		return fillColorPickerPrimary;
+	}
+
+	public ColorPicker getFillColorPickerSecondary() {
+		return fillColorPickerSecondary;
+	}
+
 	private final ColorPicker fillColorPickerSecondary = new ColorPicker(defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
@@ -88,6 +95,7 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
+
 
 		lineTypeChoiceBox.getItems().addAll(LineType.values());
 		lineTypeChoiceBox.setValue(LineType.NORMAL);
@@ -194,7 +202,7 @@ public class PaintPane extends BorderPane {
 			if (!selectedLayer.equals("Capa 1") && !selectedLayer.equals("Capa 2") && !selectedLayer.equals("Capa 3")) {
 				layersMap.remove(selectedLayer);
 				layerChoiceBox.getItems().remove(selectedLayer);
-				canvasState.deleteFiguresInLayer(layersMap.getOrDefault(selectedLayer, 0));
+				canvasState.deleteFiguresInLayer(layersMap.getOrDefault(selectedLayer, 0), this);
 				layerChoiceBox.setValue("Capa 1");
 				redrawCanvas();
 			}
@@ -286,8 +294,6 @@ public class PaintPane extends BorderPane {
 	public void addFigure(Figure figure) {
 		figure.setColor(fillColorPickerPrimary.getValue());
 		figure.setSecondaryColor(fillColorPickerSecondary.getValue());
-		shadowRendererMap.put(ShadowType.COLORED, fillColorPickerPrimary.getValue().darker());
-		shadowRendererMap.put(ShadowType.COLORED_INVERSE, fillColorPickerPrimary.getValue().darker());
 		shadowChoiceBox.setValue(ShadowType.NONE);
 		canvasState.addFigure(figure);
 		layerChoiceBox.setValue("Capa 1");
@@ -299,6 +305,8 @@ public class PaintPane extends BorderPane {
 		for (Figure figure : canvasState.figures()) {
 			if(figure.isShowable()) {
 				gc.setLineWidth(figure.getLineWidth());
+				shadowRendererMap.put(ShadowType.COLORED, figure.getColor().darker());
+				shadowRendererMap.put(ShadowType.COLORED_INVERSE, figure.getColor().darker());
 				Color shadowColor = shadowRendererMap.get(figure.getShadowType());
 				gc.setStroke(Color.TRANSPARENT);
 				gc.setFill(shadowColor);

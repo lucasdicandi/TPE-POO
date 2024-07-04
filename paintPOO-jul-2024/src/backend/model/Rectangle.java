@@ -62,6 +62,9 @@ public class Rectangle extends Figure {
         toReturn.setShadowType(this.getShadowType());
         toReturn.setLineType(this.getLineType());
         toReturn.setLineWidth(this.getLineWidth());
+        toReturn.setLayer(this.getLayer());
+        toReturn.setColor(this.getColor());
+        toReturn.setSecondaryColor(this.getSecondaryColor());
 
         return toReturn;
     }
