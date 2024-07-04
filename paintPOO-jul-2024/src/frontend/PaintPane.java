@@ -331,6 +331,7 @@ public class PaintPane extends BorderPane {
 				return figure;
 			}
 		}
+
 		return null;
 	}
 
