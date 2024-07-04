@@ -1,16 +1,13 @@
 package frontend;
 import backend.CanvasState;
 import backend.model.*;
-import frontend.Buttons.*;
+import frontend.Buttons.ToolButton.*;
 import frontend.Renders.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -173,9 +170,9 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
-		addLayerToolButton addLayerButton = new addLayerToolButton(this);
+		AddLayerToolButton addLayerButton = new AddLayerToolButton(this);
 
-		deleteLayerToolButton deleteLayerButton = new deleteLayerToolButton(this);
+		DeleteLayerToolButton deleteLayerButton = new DeleteLayerToolButton(this);
 
 		ToggleGroup visibilityGroup = new ToggleGroup();
 		RadioButton showLayerButton = new RadioButton("Mostrar");
