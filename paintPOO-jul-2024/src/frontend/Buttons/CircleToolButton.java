@@ -2,11 +2,12 @@ package frontend.Buttons;
 
 import backend.model.*;
 import frontend.PaintPane;
-import frontend.Renders.CircleRenderer;
+import frontend.Renders.EllipseRenderer;
+import frontend.Renders.EllipseRenderer;
 
 public class CircleToolButton extends ToolButton {
 
-    CircleRenderer circleToPlain = new CircleRenderer();
+    EllipseRenderer circleToPlain = new EllipseRenderer();
     public CircleToolButton() {
         super("Círculo");
     }

@@ -26,24 +26,22 @@ public class PaintPane extends BorderPane {
 	private final CanvasState canvasState;
 	private final Canvas canvas = new Canvas(800, 600);
 	private final GraphicsContext gc = canvas.getGraphicsContext2D();
-	private final Color lineColor = Color.BLACK;
-	private final Color defaultFillColor = Color.YELLOW;
+	private final Color lineColor = Color.BLACK, defaultFillColor = Color.YELLOW;
 	private Point startPoint;
 	private Figure selectedFigure;
 	private final StatusPane statusPane;
 	private ToolButton currentTool;
 	private final ToggleGroup toolsGroup = new ToggleGroup();
-	private final ColorPicker fillColorPickerPrimary = new ColorPicker(defaultFillColor);
-
-	private final ColorPicker fillColorPickerSecondary = new ColorPicker(defaultFillColor);
+	private final ColorPicker fillColorPickerPrimary = new ColorPicker(defaultFillColor), fillColorPickerSecondary = new ColorPicker(defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
+	private final Map<String, Integer> layersMap = new TreeMap<>();
+	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
 	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
 	private final ChoiceBox<LineType> lineTypeChoiceBox = new ChoiceBox<>();
-	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
-	private final Slider lineWithSlider = new Slider(1, 10, 5);
 	private final ChoiceBox<String> layerChoiceBox = new ChoiceBox<>();
-	private final Map<String, Integer> layersMap = new TreeMap<>();
-	private int nextLayerNumber = 4;
+	private final Slider lineWithSlider = new Slider(1, 10, 5);
+	private static final int INITIAL_LAYER = 4;
+	private int nextLayerNumber = INITIAL_LAYER;
 
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
@@ -52,6 +50,23 @@ public class PaintPane extends BorderPane {
 		initializeTools();
 		initializeUI();
 		setupCanvasEvents();
+		setUpPropertiesMaps();
+
+	}
+
+	private void initializeUI() {
+		setUpChoiceButtons();
+		VBox buttonsBox = new VBox(10);
+		renderChoiceButtons(buttonsBox);
+		HBox topBar = new HBox(10);
+		renderHBox(topBar);
+		setTop(topBar);
+		setLeft(buttonsBox);
+		setRight(canvas);
+
+	}
+
+	public void setUpPropertiesMaps(){
 		this.rendererMap.put(Circle.class, new CircleRenderer());
 		this.rendererMap.put(Rectangle.class, new RectangleRenderer());
 		this.rendererMap.put(Ellipse.class, new EllipseRenderer());
@@ -59,7 +74,6 @@ public class PaintPane extends BorderPane {
 		shadowRendererMap.put(ShadowType.NONE, Color.TRANSPARENT);
 		shadowRendererMap.put(ShadowType.SIMPLE, Color.GRAY);
 		shadowRendererMap.put(ShadowType.SIMPLE_INVERSE, Color.GRAY);
-
 	}
 	private void initializeTools() {
 		ToolButton[] toolsArr = {
@@ -78,7 +92,7 @@ public class PaintPane extends BorderPane {
 		
 	}
 
-	private void initializeUI() {
+	private void setUpChoiceButtons(){
 		shadowChoiceBox.getItems().addAll(ShadowType.values());
 		shadowChoiceBox.setValue(ShadowType.NONE);
 		shadowChoiceBox.setOnAction(event -> {
@@ -120,8 +134,9 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
+	}
 
-		VBox buttonsBox = new VBox(10);
+	public void renderChoiceButtons(VBox buttonsBox){
 		for (var toggle : toolsGroup.getToggles()) {
 			buttonsBox.getChildren().add((Node) toggle);
 		}
@@ -138,7 +153,6 @@ public class PaintPane extends BorderPane {
 		setLeft(buttonsBox);
 		setRight(canvas);
 
-		VBox sidebar = new VBox();
 		buttonsBox.setSpacing(10);
 
 		lineWithSlider.setShowTickMarks(true);
@@ -152,10 +166,9 @@ public class PaintPane extends BorderPane {
 		buttonsBox.getChildren().addAll(new DuplicateToolButton(this));
 		buttonsBox.getChildren().addAll(new DivideToolButton(this));
 		buttonsBox.getChildren().addAll(new CenterToolButton(this));
+	}
 
-		//////-----------------CAPAS---------------------///////
-
-		HBox topBar = new HBox(10);
+	private void renderHBox(HBox topBar){
 		topBar.setPadding(new Insets(5));
 		topBar.setStyle("-fx-background-color: #999");
 
@@ -244,19 +257,11 @@ public class PaintPane extends BorderPane {
 				showLayerButton,
 				hideLayerButton
 		);
-
-		setTop(topBar);
-		setLeft(buttonsBox);
-		setRight(canvas);
-
 	}
-
-	public ChoiceBox<String> getLayerChoiceBox() {
-		return layerChoiceBox;
-	}
+	
 
 	private void setupCanvasEvents() {
-				canvas.setOnMousePressed(event -> {
+		canvas.setOnMousePressed(event -> {
 			if (currentTool != null) {
 				currentTool.onMousePressed(this, event.getX(), event.getY());
 			}
@@ -321,9 +326,7 @@ public class PaintPane extends BorderPane {
 		}
 	}
 
-	public GraphicsContext getGc() {
-		return gc;
-	}
+
 
 	public Figure findFigureAtPoint(Point point) {
 		for (Figure figure : canvasState.figures().reversed()) {
@@ -335,31 +338,48 @@ public class PaintPane extends BorderPane {
 		return null;
 	}
 
-	public Point getStartPoint() {
-		return startPoint;
-	}
-	public void setStartPoint(Point startPoint) {
-		this.startPoint = startPoint;
-	}
-	public Figure getSelectedFigure() {
-		return selectedFigure;
-	}
-	public void setSelectedFigure(Figure selectedFigure) {
-		this.selectedFigure = selectedFigure;
-	}
-	public StatusPane getStatusPane() {
-		return statusPane;
-	}
 	public void removeFigure(Figure figure) {
 		canvasState.deleteFigure(figure);
 		redrawCanvas();
 	}
+
+	//setters and getters
+
+	public ChoiceBox<String> getLayerChoiceBox() {
+		return layerChoiceBox;
+	}
+	public GraphicsContext getGc() {
+		return gc;
+	}
+
+	public Point getStartPoint() {
+		return startPoint;
+	}
+
+	public void setStartPoint(Point startPoint) {
+		this.startPoint = startPoint;
+	}
+
+	public Figure getSelectedFigure() {
+		return selectedFigure;
+	}
+
+	public void setSelectedFigure(Figure selectedFigure) {
+		this.selectedFigure = selectedFigure;
+	}
+
+	public StatusPane getStatusPane() {
+		return statusPane;
+	}
+
 	public CanvasState getCanvasState() {
 		return canvasState;
 	}
+
 	public double getCanvasWidth() {
 		return canvas.getWidth();
 	}
+
 	public double getCanvasHeight() {
 		return canvas.getHeight();
 	}
@@ -375,6 +395,7 @@ public class PaintPane extends BorderPane {
 	public ChoiceBox<ShadowType> getShadowChoiceBox() {
 		return shadowChoiceBox;
 	}
+
 	public ChoiceBox<LineType> getLineTypeChoiceBox() {
 		return lineTypeChoiceBox;
 	}
