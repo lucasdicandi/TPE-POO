@@ -25,22 +25,11 @@ public class CanvasState {
         list.remove(figure);
     }
 
-    public Iterable<Figure> figures() {
+    public List<Figure> figures() {
         list.sort((o1, o2) -> {
             int cmp = Integer.compare(o1.getLayer(), o2.getLayer());
             if (cmp == 0) {
-                return o1.equals(o2) ? 0 : 1;
-            }
-            return cmp;
-        });
-        return new ArrayList<>(list);
-    }
-
-    public Iterable<Figure> figuresReversed() {
-        list.sort((o1, o2) -> {
-            int cmp = Integer.compare(o2.getLayer(), o1.getLayer());
-            if (cmp == 0) {
-                return o1.equals(o2) ? 0 : 1;
+                return o1.equals(o2) ? 1 : 0;
             }
             return cmp;
         });

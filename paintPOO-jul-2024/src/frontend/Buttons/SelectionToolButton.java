@@ -1,7 +1,9 @@
 package frontend.Buttons;
 
 import backend.model.Figure;
+import backend.model.LineType;
 import backend.model.Point;
+import backend.model.ShadowType;
 import frontend.PaintPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -57,6 +59,11 @@ public class SelectionToolButton extends ToolButton {
             paintPane.getLayerChoiceBox().setValue("Capa %d".formatted(figure.getLayer()));
             paintPane.getFillColorPickerPrimary().setValue(figure.getColor());
             paintPane.getFillColorPickerSecondary().setValue(figure.getSecondaryColor());
+            paintPane.getShadowChoiceBox().setValue(figure.getShadowType());
+            paintPane.getLineTypeChoiceBox().setValue(figure.getLineType());
+        }else{
+            paintPane.getShadowChoiceBox().setValue(ShadowType.NONE);
+            paintPane.getLineTypeChoiceBox().setValue(LineType.NORMAL);
         }
 
         paintPane.redrawCanvas();
@@ -64,10 +71,12 @@ public class SelectionToolButton extends ToolButton {
 
     @Override
     public void onMouseReleased(PaintPane paintPane, double x, double y) {
-        paintPane.setSelectedFigure(null);
+        //paintPane.setSelectedFigure(null);
     }
 
-
-
-
 }
+
+
+
+
+

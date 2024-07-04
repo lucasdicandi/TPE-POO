@@ -14,6 +14,7 @@ public abstract class Figure {
     private double LineWidth = DEFAULT_VALUE_LENGHT;
     private int layer = 1;
 
+
     private boolean showable = true;
 
     public boolean isShowable() {

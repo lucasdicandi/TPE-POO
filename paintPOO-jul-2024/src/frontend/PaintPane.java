@@ -35,14 +35,6 @@ public class PaintPane extends BorderPane {
 	private final ToggleGroup toolsGroup = new ToggleGroup();
 	private final ColorPicker fillColorPickerPrimary = new ColorPicker(defaultFillColor);
 
-	public ColorPicker getFillColorPickerPrimary() {
-		return fillColorPickerPrimary;
-	}
-
-	public ColorPicker getFillColorPickerSecondary() {
-		return fillColorPickerSecondary;
-	}
-
 	private final ColorPicker fillColorPickerSecondary = new ColorPicker(defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
@@ -334,13 +326,14 @@ public class PaintPane extends BorderPane {
 	}
 
 	public Figure findFigureAtPoint(Point point) {
-		for (Figure figure : canvasState.figures()) {
+		for (Figure figure : canvasState.figures().reversed()) {
 			if (figure.containsPoint(point)) {
 				return figure;
 			}
 		}
 		return null;
 	}
+
 	public Point getStartPoint() {
 		return startPoint;
 	}
@@ -369,6 +362,22 @@ public class PaintPane extends BorderPane {
 	public double getCanvasHeight() {
 		return canvas.getHeight();
 	}
+
+	public ColorPicker getFillColorPickerPrimary() {
+		return fillColorPickerPrimary;
+	}
+
+	public ColorPicker getFillColorPickerSecondary() {
+		return fillColorPickerSecondary;
+	}
+
+	public ChoiceBox<ShadowType> getShadowChoiceBox() {
+		return shadowChoiceBox;
+	}
+	public ChoiceBox<LineType> getLineTypeChoiceBox() {
+		return lineTypeChoiceBox;
+	}
+
 
 
 }

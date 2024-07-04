@@ -15,6 +15,7 @@ public class SquareToolButton extends ToolButton {
 
     @Override
     public void onMousePressed(PaintPane paintPane, double x, double y) {
+        paintPane.setSelectedFigure(null);
         paintPane.setStartPoint(new Point(x, y));
     }
 
