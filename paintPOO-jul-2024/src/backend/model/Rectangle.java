@@ -26,14 +26,6 @@ public class Rectangle extends Figure {
         return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);
     }
 
-    public double base() {
-        return Math.abs(topLeft.getX() - bottomRight.getX());
-    }
-
-    public double height() {
-        return Math.abs(topLeft.getY() - bottomRight.getY());
-    }
-
 
     @Override
     public void draw(double diffX, double diffY) {
@@ -57,15 +49,8 @@ public class Rectangle extends Figure {
     public Rectangle clone() {
         Point clonedTopLeft = new Point(topLeft.getX(), topLeft.getY());
         Point clonedBottomRight = new Point(bottomRight.getX(), bottomRight.getY());
-
         Rectangle toReturn = new Rectangle(clonedTopLeft, clonedBottomRight);
-        toReturn.setShadowType(this.getShadowType());
-        toReturn.setLineType(this.getLineType());
-        toReturn.setLineWidth(this.getLineWidth());
-        toReturn.setLayer(this.getLayer());
-        toReturn.setColor(this.getColor());
-        toReturn.setSecondaryColor(this.getSecondaryColor());
-
+        cloneProperties(toReturn);
         return toReturn;
     }
 
@@ -84,14 +69,8 @@ public class Rectangle extends Figure {
         Rectangle rect1 = new Rectangle(newTopLeft1, newBottomRight1);
         Rectangle rect2 = new Rectangle(newTopLeft2, newBottomRight2);
 
-        rect1.setShadowType(this.getShadowType());
-        rect2.setShadowType(this.getShadowType());
-
-        rect1.setLineType(this.getLineType());
-        rect2.setLineType(this.getLineType());
-
-        rect1.setLineWidth(this.getLineWidth());
-        rect2.setLineWidth(this.getLineWidth());
+        cloneProperties(rect1);
+        cloneProperties(rect2);
 
         return new Figure[] { rect1, rect2 };
     }

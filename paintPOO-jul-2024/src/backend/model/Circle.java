@@ -17,10 +17,6 @@ public class Circle extends Ellipse {
         return String.format("Círculo [Centro: %s, Radio: %.2f]", super.getCenterPoint(), radius);
     }
 
-    public double getRadius() {
-        return radius;
-    }
-
     @Override
     public boolean containsPoint(Point point) {
         double distance = Math.sqrt(Math.pow(super.getCenterPoint().getX() - point.getX(), 2) +

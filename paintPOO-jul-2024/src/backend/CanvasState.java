@@ -12,13 +12,7 @@ public class CanvasState {
 
     public void addFigure(Figure figure) {
         list.add(figure);
-        list.sort((o1, o2) -> {
-            int cmp = Integer.compare(o1.getLayer(), o2.getLayer());
-                if (cmp == 0) {
-                    return o1.equals(o2) ? 0 : 1;
-                }
-             return cmp;
-            });
+        list.sort(comparator());
     }
 
     public void deleteFigure(Figure figure) {
@@ -26,23 +20,18 @@ public class CanvasState {
     }
 
     public List<Figure> figures() {
-        list.sort((o1, o2) -> {
+        list.sort(comparator());
+        return new ArrayList<>(list);
+    }
+
+    private Comparator<Figure> comparator(){
+        return (o1, o2) -> {
             int cmp = Integer.compare(o1.getLayer(), o2.getLayer());
             if (cmp == 0) {
                 return o1.equals(o2) ? 1 : 0;
             }
             return cmp;
-        });
-        return new ArrayList<>(list);
-    }
-
-    //TO-FIX
-    public void deleteFiguresInLayer(int layer, PaintPane paintPane) {
-        for(Figure figure : list){
-            if(figure.getLayer() == layer) {
-               figure.setShow(false);
-            }
-        }
+        };
     }
 
 

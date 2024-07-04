@@ -67,13 +67,7 @@ public class Ellipse extends Figure {
         Ellipse clonedEllipse = new Ellipse(clonedStartPoint, clonedEndPoint);
         clonedEllipse.setsMayorAxis(this.sMayorAxis);
         clonedEllipse.setsMinorAxis(this.sMinorAxis);
-        clonedEllipse.setShadowType(this.getShadowType());
-        clonedEllipse.setLineType(this.getLineType());
-        clonedEllipse.setLineWidth(this.getLineWidth());
-        clonedEllipse.setLayer(this.getLayer());
-        clonedEllipse.setColor(this.getColor());
-        clonedEllipse.setSecondaryColor(this.getSecondaryColor());
-
+        cloneProperties(clonedEllipse);
         return clonedEllipse;
     }
 
@@ -98,13 +92,8 @@ public class Ellipse extends Figure {
         ellipse2.setsMayorAxis(halfMajorAxis);
         ellipse2.setsMinorAxis(sMinorAxis/2);
 
-        ellipse1.setShadowType(this.getShadowType());
-        ellipse2.setShadowType(this.getShadowType());
-        ellipse1.setLineType(this.getLineType());
-        ellipse2.setLineType(this.getLineType());
-
-        ellipse1.setLineWidth(this.getLineWidth());
-        ellipse2.setLineWidth(this.getLineWidth());
+        cloneProperties(ellipse1);
+        cloneProperties(ellipse2);
 
         return new Figure[] { ellipse1, ellipse2 };
     }

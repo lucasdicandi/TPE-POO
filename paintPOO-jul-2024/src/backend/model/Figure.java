@@ -96,4 +96,13 @@ public abstract class Figure {
     }
 
     public abstract void moveToCenter(double centerX, double centerY);
+
+    protected void cloneProperties(Figure figure){
+        figure.setShadowType(this.getShadowType());
+        figure.setLineType(this.getLineType());
+        figure.setLineWidth(this.getLineWidth());
+        figure.setLayer(this.getLayer());
+        figure.setColor(this.getColor());
+        figure.setSecondaryColor(this.getSecondaryColor());
+    }
 }

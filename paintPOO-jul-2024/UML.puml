@@ -70,94 +70,13 @@ package backend {
     class CanvasState {
         - List<Figure> list
         + void addFigure(Figure figure)
-        + void deleteFigure(Figure figure)
-        + Iterable<Figure> figures()
-    }
-}
-
-package frontend {
-    class AppLauncher {
-        + void main(String[] args)
-        + void start(Stage primaryStage)
-    }
-
-    class AppMenuBar {
-        + AppMenuBar()
-    }
-
-    class MainFrame {
-        - CanvasState canvasState
-        - PaintPane paintPane
-        - AppMenuBar appMenuBar
-        - StatusPane statusPane
-        + MainFrame(CanvasState canvasState)
-    }
-
-    class PaintPane {
-        - CanvasState canvasState
-        - GraphicsContext gc
-        - Figure selectedFigure
-        - Point startPoint
-        - Color lineColor
-        + PaintPane(CanvasState canvasState, StatusPane statusPane)
-        + void redrawCanvas()
-        + GraphicsContext getGc()
-        + Figure findFigureAtPoint(Point point)
         + void removeFigure(Figure figure)
-        + double getCanvasWidth()
-        + double getCanvasHeight()
+        + void clearCanvas()
     }
 
-    class StatusPane {
-        - Label statusLabel
-        + StatusPane()
-        + void updateStatus(String text)
-    }
-}
-
-package frontend.Renders {
-    abstract class FigureRenderer {
-        + abstract void render(Figure figure, GraphicsContext gc)
-    }
-
-    class CircleRenderer extends FigureRenderer {
-        + void render(Figure figure, GraphicsContext gc)
-    }
-
-    class EllipseRenderer extends FigureRenderer {
-        + void render(Figure figure, GraphicsContext gc)
-    }
-
-    class RectangleRenderer extends FigureRenderer {
-        + void render(Figure figure, GraphicsContext gc)
-    }
-
-    class SquareRenderer extends RectangleRenderer {
-    }
-}
-
-package frontend.Buttons {
-    abstract class ToolButton extends ToggleButton {
-        + ToolButton(String text)
+    abstract class ToolButton {
         + void onMousePressed(PaintPane paintPane, double x, double y)
         + void onMouseReleased(PaintPane paintPane, double x, double y)
-        + void onMouseClicked(PaintPane paintPane, double x, double y)
-        + void onMouseDragged(PaintPane paintPane, double x, double y)
-    }
-
-    class DeleteToolButton extends ToolButton {
-        + DeleteToolButton(PaintPane paintPane)
-        + void onMouseClicked(PaintPane paintPane, double x, double y)
-    }
-
-    class DivideToolButton extends ToolButton {
-        + DivideToolButton(PaintPane paintPane)
-        + void onMouseClicked(PaintPane paintPane, double x, double y)
-    }
-
-    class DuplicateToolButton extends ToolButton {
-        + DuplicateToolButton(PaintPane paintPane)
-        + void onMouseClicked(PaintPane paintPane, double x, double y)
     }
 
     class EllipseToolButton extends ToolButton {
@@ -214,5 +133,80 @@ frontend.PaintPane --> backend.model.Figure
 frontend.PaintPane --> backend.model.Point
 frontend.PaintPane --> frontend.Renders.FigureRenderer
 
+package frontend{
+    class PaintPane {
+    }
+
+    class MainFrame {
+    }
+
+    class AppLauncher {
+        public void start(Stage primaryStage)
+    }
+
+    class StatusPane {
+    }
+
+    class AppMenuBar {
+    }
+}
+package frontend.Buttons{
+    class DeleteToolButton {
+    }
+
+    class SquareToolButton {
+    }
+
+    class CenterToolButton {
+    }
+
+    class Button {
+    }
+
+    class MoveToCenterToolButton {
+    }
+
+    class ShadowChoiceBox {
+    }
+
+    class ToolButton {
+    }
+
+    class DuplicateToolButton {
+    }
+
+    class CircleToolButton {
+    }
+
+    class DivideToolButton {
+    }
+
+    class EllipseToolButton {
+    }
+
+    class SelectionToolButton {
+    }
+
+    class RectangleToolButton {
+    }
+}
+package frontend.Renders{
+
+    class FigureRenderer {
+    }
+
+    class CircleRenderer {
+    }
+
+    class SquareRenderer {
+    }
+
+    class RectangleRenderer {
+    }
+
+    class EllipseRenderer {
+    }
+
+}
 
 @enduml

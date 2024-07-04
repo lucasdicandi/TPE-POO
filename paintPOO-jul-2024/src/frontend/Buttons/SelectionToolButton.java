@@ -43,7 +43,7 @@ public class SelectionToolButton extends ToolButton {
         }else{
             selectedFigure = paintPane.getSelectedFigure();
         }
-        
+
         if (selectedFigure != null) {
             double deltaX = x - initialX ;
             double deltaY = y - initialY ;
