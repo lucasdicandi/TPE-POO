@@ -51,7 +51,7 @@ public class CanvasState {
     public void deleteFiguresInLayer(int layer, PaintPane paintPane) {
         for(Figure figure : list){
             if(figure.getLayer() == layer) {
-                list.remove(figure);
+               figure.setShow(false);
             }
         }
     }

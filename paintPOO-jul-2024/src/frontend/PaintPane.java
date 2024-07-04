@@ -178,7 +178,7 @@ public class PaintPane extends BorderPane {
 
 		layerChoiceBox.setOnAction(event -> {
 			if(selectedFigure != null) {
-				selectedFigure.setLayer(layersMap.get(layerChoiceBox.getValue()));
+				selectedFigure.setLayer(layersMap.getOrDefault(layerChoiceBox.getValue(), 1));
 				redrawCanvas();
 			}
 		});
@@ -202,7 +202,12 @@ public class PaintPane extends BorderPane {
 			if (!selectedLayer.equals("Capa 1") && !selectedLayer.equals("Capa 2") && !selectedLayer.equals("Capa 3")) {
 				layersMap.remove(selectedLayer);
 				layerChoiceBox.getItems().remove(selectedLayer);
-				canvasState.deleteFiguresInLayer(layersMap.getOrDefault(selectedLayer, 0), this);
+				for(Figure figure : canvasState.figures()) {
+					if (Objects.equals(layerChoiceBox.getValue(), "Capa " + figure.getLayer())){
+						canvasState.deleteFigure(figure);
+					}
+				}
+				redrawCanvas();
 				layerChoiceBox.setValue("Capa 1");
 				redrawCanvas();
 			}
