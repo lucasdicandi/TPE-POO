@@ -175,7 +175,9 @@ package frontend {
         }
 
         class DeleteToolButton extends ToolButton {
-            // Attributes and methods specific to DeleteToolButton
+            -PaintPane paintPane
+            +DeleteToolButton(PaintPane paintPane)
+            +onMouseClicked(PaintPane paintPane, double x, double y)
         }
 
         class SquareToolButton extends ToolButton {
@@ -183,7 +185,9 @@ package frontend {
         }
 
         class CenterToolButton extends ToolButton {
-            // Attributes and methods specific to CenterToolButton
+            -PaintPane paintPane
+            +CenterToolButton(PaintPane paintPane)
+            +onMouseClicked(PaintPane paintPane, double x, double y)
         }
 
         class MoveToCenterToolButton extends ToolButton {
@@ -203,8 +207,10 @@ package frontend {
         }
 
         class DivideToolButton extends ToolButton {
-            // Attributes and methods specific to DivideToolButton
-        }
+            -PaintPane paintPane
+            +CenterToolButton(PaintPane paintPane)
+                        +onMouseClicked(PaintPane paintPane, double x, double y)
+                        }
 
         class EllipseToolButton extends ToolButton {
             // Attributes and methods specific to EllipseToolButton
@@ -225,20 +231,18 @@ package frontend {
             +void renderShadow(Figure figure, GraphicsContext gc, Color color)
         }
 
-        class CircleRenderer extends FigureRenderer {
-            // Attributes and methods specific to CircleRenderer
+        class CircleRenderer extends EllipseRenderer {
         }
 
-        class SquareRenderer extends FigureRenderer {
-            // Attributes and methods specific to SquareRenderer
+        class SquareRenderer extends RectangleRenderer {
         }
 
         class RectangleRenderer extends FigureRenderer {
-            // Attributes and methods specific to RectangleRenderer
+            +void render(Figure figure, GraphicsContext gc)
         }
 
         class EllipseRenderer extends FigureRenderer {
-            // Attributes and methods specific to EllipseRenderer
+            +void render(Figure figure, GraphicsContext gc)
         }
     }
 }
