@@ -1,7 +1,12 @@
 package frontend;
 import backend.CanvasState;
 import backend.model.*;
-import frontend.Buttons.ToolButton.*;
+import frontend.Buttons.ChoiceBox.LineTypeChoiceBox;
+import frontend.Buttons.ChoiceBox.ShadowChoiceBox;
+import frontend.Buttons.ColorPicker.FillColorPickerPrimary;
+import frontend.Buttons.ColorPicker.FillColorPickerSecondary;
+import frontend.Buttons.Slider.LineWithSliderButton;
+import frontend.Buttons.ToolButtons.*;
 import frontend.Renders.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,12 +18,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
+
 import java.util.*;
 import javafx.scene.control.ChoiceBox;
 import javafx.collections.FXCollections;
+import javafx.scene.paint.*;
 
 public class PaintPane extends BorderPane {
 	private final CanvasState canvasState;
@@ -30,14 +34,17 @@ public class PaintPane extends BorderPane {
 	private final StatusPane statusPane;
 	private ToolButton currentTool;
 	private final ToggleGroup toolsGroup = new ToggleGroup();
-	private final ColorPicker fillColorPickerPrimary = new ColorPicker(defaultFillColor), fillColorPickerSecondary = new ColorPicker(defaultFillColor);
+	private final FillColorPickerPrimary fillColorPickerPrimary = new FillColorPickerPrimary(this, defaultFillColor);
+	private final FillColorPickerSecondary fillColorPickerSecondary = new FillColorPickerSecondary(this, defaultFillColor);
 	private final Map<Class<? extends Figure>, FigureRenderer> rendererMap = new HashMap<>();
 	private final Map<String, Integer> layersMap = new TreeMap<>();
 	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
-	private final ChoiceBox<ShadowType> shadowChoiceBox = new ChoiceBox<>();
-	private final ChoiceBox<LineType> lineTypeChoiceBox = new ChoiceBox<>();
+	private final ShadowChoiceBox shadowChoiceBox = new ShadowChoiceBox(this);
+	private final LineTypeChoiceBox lineTypeChoiceBox = new LineTypeChoiceBox(this);
+
 	private final ChoiceBox<String> layerChoiceBox = new ChoiceBox<>();
-	private final Slider lineWithSlider = new Slider(1, 10, 5);
+
+	private final LineWithSliderButton lineWithSlider = new LineWithSliderButton(1, 10, 5, this);
 	private static final int INITIAL_LAYER = 4;
 	private int nextLayerNumber = INITIAL_LAYER;
 
@@ -52,7 +59,6 @@ public class PaintPane extends BorderPane {
 	}
 
 	private void initializeUI() {
-		setUpChoiceButtons();
 		VBox buttonsBox = new VBox(10);
 		renderChoiceButtons(buttonsBox);
 		HBox topBar = new HBox(10);
@@ -89,49 +95,6 @@ public class PaintPane extends BorderPane {
 		shadowRendererMap.put(ShadowType.SIMPLE_INVERSE, Color.GRAY);
 	}
 
-	private void setUpChoiceButtons(){
-		shadowChoiceBox.getItems().addAll(ShadowType.values());
-		shadowChoiceBox.setValue(ShadowType.NONE);
-		shadowChoiceBox.setOnAction(event -> {
-			if(selectedFigure != null) {
-				selectedFigure.setShadowType(shadowChoiceBox.getValue());
-				redrawCanvas();
-			}
-		});
-
-
-		lineTypeChoiceBox.getItems().addAll(LineType.values());
-		lineTypeChoiceBox.setValue(LineType.NORMAL);
-		lineTypeChoiceBox.setOnAction(event -> {
-			if(selectedFigure != null) {
-				selectedFigure.setLineType(lineTypeChoiceBox.getValue());
-				redrawCanvas();
-			}
-		});
-
-		lineWithSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
-			if (selectedFigure != null) {
-				selectedFigure.setLineWidth(newVal.doubleValue());
-				redrawCanvas();
-			}
-		});
-
-		fillColorPickerPrimary.setOnAction(event ->{
-			if (selectedFigure != null) {
-				selectedFigure.setColor(fillColorPickerPrimary.getValue());
-				shadowRendererMap.put(ShadowType.COLORED, fillColorPickerPrimary.getValue().darker());
-				shadowRendererMap.put(ShadowType.COLORED_INVERSE, fillColorPickerPrimary.getValue().darker());
-				redrawCanvas();
-			}
-		});
-
-		fillColorPickerSecondary.setOnAction(event ->{
-			if (selectedFigure != null) {
-				selectedFigure.setSecondaryColor(fillColorPickerSecondary.getValue());
-				redrawCanvas();
-			}
-		});
-	}
 
 	public void renderChoiceButtons(VBox buttonsBox){
 		for (var toggle : toolsGroup.getToggles()) {
@@ -277,18 +240,14 @@ public class PaintPane extends BorderPane {
 		FigureRenderer renderer = rendererMap.get(figure.getClass());
 		renderer.renderShadow(figure, gc, shadowColor);
 		gc.setLineDashes(figure.getLineType().getDashes());
-		RadialGradient radialGradient = getColorGradiant(figure);
+
+		Paint paint = renderer.getColorGradiant(figure);
+
 		gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
-		gc.setFill(radialGradient);
+		gc.setFill(paint);
 		renderer.render(figure, gc);
 	}
 
-	private RadialGradient getColorGradiant(Figure figure){
-		return new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
-				CycleMethod.NO_CYCLE,
-				new Stop(0, figure.getColor()),
-				new Stop(1, figure.getSecondaryColor()));
-	}
 
 	public Figure findFigureAtPoint(Point point) {
 		for (Figure figure : canvasState.figures().reversed()) {
@@ -359,6 +318,10 @@ public class PaintPane extends BorderPane {
 	}
 	public ChoiceBox<LineType> getLineTypeChoiceBox() {
 		return lineTypeChoiceBox;
+	}
+
+	public Map<ShadowType, Color> getShadowRendererMap(){
+		return shadowRendererMap;
 	}
 
 }

@@ -4,6 +4,7 @@ import backend.model.Figure;
 import backend.model.ShadowType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public abstract class FigureRenderer {
     public abstract void render(Figure figure, GraphicsContext gc);
@@ -15,5 +16,7 @@ public abstract class FigureRenderer {
         shadow.draw(figure.getShadowType().getOffset(), figure.getShadowType().getOffset());
         render(shadow, gc);
     }
+
+    public abstract Paint getColorGradiant(Figure figure);
 
 }

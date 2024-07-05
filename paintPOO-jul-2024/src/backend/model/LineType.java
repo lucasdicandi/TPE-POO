@@ -9,7 +9,7 @@ public enum LineType {
     }, PUNTEADO(10){
         @Override
         public String toString(){
-            return "Puntedo";
+            return "Punteado";
         }
     }, PUNTEADO_COMPLEJO(30, 10, 15, 10){
         @Override
