@@ -178,12 +178,8 @@ public class PaintPane extends BorderPane {
 		showLayerButton.setToggleGroup(visibilityGroup);
 		hideLayerButton.setToggleGroup(visibilityGroup);
 		showLayerButton.setSelected(true);
-
 		AddLayerToolButton addLayerButton = new AddLayerToolButton(this);
-
 		DeleteLayerToolButton deleteLayerButton = new DeleteLayerToolButton(this);
-
-
 
 		visibilityGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
 			if (newToggle != null) {

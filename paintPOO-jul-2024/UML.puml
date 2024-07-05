@@ -1,3 +1,4 @@
+
 @startuml
 
 package backend.model {
@@ -71,178 +72,83 @@ package backend {
         - List<Figure> list
         + void addFigure(Figure figure)
         + void removeFigure(Figure figure)
-        + void clearCanvas()
-    }
-
-    abstract class ToolButton {
-        + void onMousePressed(PaintPane paintPane, double x, double y)
-        + void onMouseReleased(PaintPane paintPane, double x, double y)
-    }
-
-    class EllipseToolButton extends ToolButton {
-        + EllipseToolButton()
-        + void onMousePressed(PaintPane paintPane, double x, double y)
-        + void onMouseReleased(PaintPane paintPane, double x, double y)
-    }
-
-    class MoveToCenterToolButton extends ToolButton {
-        + MoveToCenterToolButton(PaintPane paintPane)
-        + void onMouseClicked(PaintPane paintPane, double x, double y)
-    }
-
-    class RectangleToolButton extends ToolButton {
-        + RectangleToolButton()
-        + void onMousePressed(PaintPane paintPane, double x, double y)
-        + void onMouseReleased(PaintPane paintPane, double x, double y)
-    }
-
-    class SelectionToolButton extends ToolButton {
-        + SelectionToolButton()
-        + void onMouseClicked(PaintPane paintPane, double x, double y)
-    }
-
-    class ShadowToolButton extends ChoiceBox {
-    }
-
-    class SquareToolButton extends ToolButton {
-        + SquareToolButton()
-        + void onMousePressed(PaintPane paintPane, double x, double y)
-        + void onMouseReleased(PaintPane paintPane, double x, double y)
-    }
-
-    class CircleToolButton extends ToolButton {
-        + CircleToolButton()
-        + void onMousePressed(PaintPane paintPane, double x, double y)
-        + void onMouseReleased(PaintPane paintPane, double x, double y)
-    }
-
-    class CenterToolButton extends ToolButton {
-        + CenterToolButton(PaintPane paintPane)
-        + void onMouseClicked(PaintPane paintPane, double x, double y)
+        + List<Figure> getFigures()
+        + Figure getFigureAt(Point point)
+        + void clear()
     }
 }
 
-
-
 package frontend {
     class AppLauncher {
-        +main(args: String[]): void
+        +void start(Stage primaryStage)
     }
 
     class MainFrame {
-        -paintPane: PaintPane
-        -statusPane: StatusPane
+        +MainFrame()
+        +void initializeComponents()
     }
 
-    class PaintPane extends BorderPane {
-        -initializeTools(): void
-        -initializeUI(): void
-        -setupCanvasEvents(): void
-        +addFigure(figure: Figure): void
-        +redrawCanvas(): void
-        +getGc(): GraphicsContext
-        +findFigureAtPoint(point: Point): Figure
-        +getStartPoint(): Point
-        +setStartPoint(startPoint: Point): void
-        +getSelectedFigure(): Figure
-        +setSelectedFigure(selectedFigure: Figure): void
-        +getStatusPane(): StatusPane
-        +removeFigure(figure: Figure): void
-        +getCanvasState(): CanvasState
-        +getCanvasWidth(): double
-        +getCanvasHeight(): double
-        +getFillColorPickerPrimary(): ColorPicker
-        // Additional methods truncated for brevity
+    class PaintPane {
+        - Canvas canvas
+        - CanvasState canvasState
+        - Figure selectedFigure
+        + PaintPane()
+        + void redrawCanvas()
+        + void addFigure(Figure figure)
+        + void removeFigure(Figure figure)
+        + Figure getSelectedFigure()
+        + void setSelectedFigure(Figure figure)
+        + void clearSelection()
+        + void moveFigureToCenter(Figure figure)
     }
 
     class StatusPane {
-        -Label statusLabel;
         +StatusPane()
-        +updateStatus(String text)
-    }
-
-    class AppMenuBar {
-        +AppMenuBar()
+        + void updateStatus(String status)
     }
 
     package Buttons {
-        abstract class ToolButton{
-            public ToolButton(String text);
-            +onMousePressed(PaintPane paintPane, double x, double y):void
-            +onMouseReleased(PaintPane paintPane, double x, double y):void
-            +onMouseClicked(PaintPane paintPane, double x, double y):void
-            +onMouseDragged(PaintPane paintPane, double x, double y):void
-        }
-
-        class DeleteToolButton extends ToolButton {
-            -PaintPane paintPane
-            +DeleteToolButton(PaintPane paintPane)
-            +onMouseClicked(PaintPane paintPane, double x, double y)
-        }
-
-        class SquareToolButton extends ToolButton {
-            +SquareToolButton()
-                        +onMousePressed(PaintPane paintPane, double x, double y)
-                        +onMouseReleased(PaintPane paintPane, double x, double y)
+        abstract class ToolButton {
+            +ToolButton(String label)
+            +abstract void onMouseClicked(PaintPane paintPane, double x, double y)
         }
 
         class CenterToolButton extends ToolButton {
-            -PaintPane paintPane
-            +CenterToolButton(PaintPane paintPane)
-            +onMouseClicked(PaintPane paintPane, double x, double y)
+            +CenterToolButton()
+            +void onMouseClicked(PaintPane paintPane, double x, double y)
         }
 
-        class MoveToCenterToolButton extends ToolButton {
-            +MoveToCenterToolButton()
-        }
-
-        class ShadowChoiceBox extends Button {
-            +ShadowChoiceBox(PaintPane paintPane)
-            -onShadowTypeChanged(PaintPane paintPane, ShadowType newShadowType)
-            -Figure selectedFigure
-            +setSelectedShadow(Figure figure)
+        class DivideToolButton extends ToolButton {
+            +DivideToolButton()
+            +void onMouseClicked(PaintPane paintPane, double x, double y)
         }
 
         class DuplicateToolButton extends ToolButton {
-            -int OFFSET
-            -PaintPane paintPane
-                        +DivideToolButton(PaintPane paintPane)
-                        +onMouseClicked(PaintPane paintPane, double x, double y)
+            +DuplicateToolButton()
+            +void onMouseClicked(PaintPane paintPane, double x, double y)
         }
 
         class CircleToolButton extends ToolButton {
             +CircleToolButton()
-                        +onMousePressed(PaintPane paintPane, double x, double y)
-                        +onMouseReleased(PaintPane paintPane, double x, double y)
-        }
-
-        class DivideToolButton extends ToolButton {
-            -PaintPane paintPane
-            +DivideToolButton(PaintPane paintPane)
-            +onMouseClicked(PaintPane paintPane, double x, double y)
-        }
-
-        class EllipseToolButton extends ToolButton {
-            +EllipseToolButton()
-            +onMousePressed(PaintPane paintPane, double x, double y)
-            +onMouseReleased(PaintPane paintPane, double x, double y)
+            +void onMousePressed(PaintPane paintPane, double x, double y)
+            +void onMouseReleased(PaintPane paintPane, double x, double y)
         }
 
         class SelectionToolButton extends ToolButton {
             -double initialX
             -double initialY
             +SelectionToolButton()
-            +onMousePressed(PaintPane paintPane, double x, double y)
-            +onMouseReleased(PaintPane paintPane, double x, double y)
-            +onMouseClicked(PaintPane paintPane, double x, double y)
-            +onMouseDragged(PaintPane paintPane, double x, double y)
+            +void onMousePressed(PaintPane paintPane, double x, double y)
+            +void onMouseReleased(PaintPane paintPane, double x, double y)
+            +void onMouseClicked(PaintPane paintPane, double x, double y)
+            +void onMouseDragged(PaintPane paintPane, double x, double y)
 
         }
 
         class RectangleToolButton extends ToolButton {
             +RectangleToolButton()
-            +onMousePressed(PaintPane paintPane, double x, double y)
-                        +onMouseReleased(PaintPane paintPane, double x, double y)
+            +void onMousePressed(PaintPane paintPane, double x, double y)
+                        +void onMouseReleased(PaintPane paintPane, double x, double y)
         }
     }
 
