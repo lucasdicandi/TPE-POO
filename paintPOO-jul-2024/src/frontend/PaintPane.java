@@ -5,6 +5,8 @@ import frontend.Buttons.ChoiceBox.LineTypeChoiceBox;
 import frontend.Buttons.ChoiceBox.ShadowChoiceBox;
 import frontend.Buttons.ColorPicker.FillColorPickerPrimary;
 import frontend.Buttons.ColorPicker.FillColorPickerSecondary;
+import frontend.Buttons.RadioButton.HideLayerRadioButton;
+import frontend.Buttons.RadioButton.ShowLayerRadioButton;
 import frontend.Buttons.Slider.LineWithSliderButton;
 import frontend.Buttons.ToolButtons.*;
 import frontend.Renders.*;
@@ -41,12 +43,15 @@ public class PaintPane extends BorderPane {
 	private final Map<ShadowType, Color> shadowRendererMap = new HashMap<>();
 	private final ShadowChoiceBox shadowChoiceBox = new ShadowChoiceBox(this);
 	private final LineTypeChoiceBox lineTypeChoiceBox = new LineTypeChoiceBox(this);
-
 	private final ChoiceBox<String> layerChoiceBox = new ChoiceBox<>();
-
+	private final ShowLayerRadioButton showLayerButton = new ShowLayerRadioButton(this);
+	private final HideLayerRadioButton hideLayerButton = new HideLayerRadioButton(this);
 	private final LineWithSliderButton lineWithSlider = new LineWithSliderButton(1, 10, 5, this);
 	private static final int INITIAL_LAYER = 4;
 	private int nextLayerNumber = INITIAL_LAYER;
+
+	private final AddLayerToolButton addLayerButton = new AddLayerToolButton(this);
+	private final DeleteLayerToolButton deleteLayerButton = new DeleteLayerToolButton(this);
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
@@ -136,35 +141,16 @@ public class PaintPane extends BorderPane {
 		});
 
 		ToggleGroup visibilityGroup = new ToggleGroup();
-		RadioButton showLayerButton = new RadioButton("Mostrar");
-		RadioButton hideLayerButton = new RadioButton("Ocultar");
+
 		showLayerButton.setToggleGroup(visibilityGroup);
 		hideLayerButton.setToggleGroup(visibilityGroup);
 		showLayerButton.setSelected(true);
-		AddLayerToolButton addLayerButton = new AddLayerToolButton(this);
-		DeleteLayerToolButton deleteLayerButton = new DeleteLayerToolButton(this);
 
 		visibilityGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
 			if (newToggle != null) {
 				RadioButton selectedButton = (RadioButton) newToggle;
 				String selectedLayer = layerChoiceBox.getValue();
 				redrawCanvas();
-			}
-		});
-
-		hideLayerButton.setOnMousePressed(event -> {
-			for(Figure figure : canvasState.figures()){
-				if(figure.getLayer() == layersMap.get(layerChoiceBox.getValue())) {
-					figure.setShow(false);
-				}
-			}
-		});
-
-		showLayerButton.setOnMousePressed(event -> {
-			for(Figure figure : canvasState.figures()){
-				if(figure.getLayer() == layersMap.get(layerChoiceBox.getValue())) {
-					figure.setShow(true);
-				}
 			}
 		});
 
@@ -240,9 +226,7 @@ public class PaintPane extends BorderPane {
 		FigureRenderer renderer = rendererMap.get(figure.getClass());
 		renderer.renderShadow(figure, gc, shadowColor);
 		gc.setLineDashes(figure.getLineType().getDashes());
-
 		Paint paint = renderer.getColorGradiant(figure);
-
 		gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
 		gc.setFill(paint);
 		renderer.render(figure, gc);
