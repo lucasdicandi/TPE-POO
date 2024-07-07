@@ -9,11 +9,11 @@ import frontend.Renders.EllipseRenderer;
 public class EllipseToolButton extends ToolButton {
 
     EllipseRenderer ellipseToPlain = new EllipseRenderer();
-    public EllipseToolButton() {
+    public EllipseToolButton(PaintPane paintPane) {
         super("Elipse");
-//        this.setOnAction(event -> {
-//            paintPane.setSelectedFigure(null);
-//        });
+        this.setOnAction(event -> {
+            paintPane.setSelectedFigure(null);
+        });
     }
 
     @Override

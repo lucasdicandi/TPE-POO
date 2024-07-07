@@ -6,11 +6,11 @@ import frontend.Renders.RectangleRenderer;
 
 public class RectangleToolButton extends ToolButton {
     RectangleRenderer rectangleToPlain = new RectangleRenderer();
-    public RectangleToolButton() {
+    public RectangleToolButton(PaintPane paintPane) {
         super("Rectángulo");
-//        this.setOnAction(event -> {
-//            paintPane.setSelectedFigure(null);
-//        });
+        this.setOnAction(event -> {
+            paintPane.setSelectedFigure(null);
+        });
     }
 
 

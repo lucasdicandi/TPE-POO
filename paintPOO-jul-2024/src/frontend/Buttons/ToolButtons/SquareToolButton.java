@@ -8,11 +8,11 @@ import frontend.Renders.SquareRenderer;
 
 public class SquareToolButton extends ToolButton {
     SquareRenderer squareToPlane = new SquareRenderer();
-    public SquareToolButton() {
+    public SquareToolButton(PaintPane paintPane) {
         super("Cuadrado");
-//        this.setOnAction(event -> {
-//            paintPane.setSelectedFigure(null);
-//        });
+        this.setOnAction(event -> {
+            paintPane.setSelectedFigure(null);
+        });
     }
 
     @Override

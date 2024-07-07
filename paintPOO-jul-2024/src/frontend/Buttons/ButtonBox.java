@@ -125,10 +125,10 @@ public class ButtonBox extends Pane {
     private void initializeTools() {
         ToolButton[] toolsArr = {
                 new SelectionToolButton(),
-                new RectangleToolButton(),
-                new CircleToolButton(),
-                new SquareToolButton(),
-                new EllipseToolButton(),
+                new RectangleToolButton(paintPane),
+                new CircleToolButton(paintPane),
+                new SquareToolButton(paintPane),
+                new EllipseToolButton(paintPane),
                 new DeleteToolButton(paintPane),
         };
 
@@ -229,9 +229,6 @@ public class ButtonBox extends Pane {
         return currentTool;
     }
 
-    public void setCurrentTool(ToolButton currentTool) {
-        this.currentTool = currentTool;
-    }
 
 }
 

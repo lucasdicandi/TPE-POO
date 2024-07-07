@@ -24,8 +24,7 @@ public class SelectionToolButton extends ToolButton {
         Figure f = paintPane.findFigureAtPoint(point);
         paintPane.setSelectedFigure(f);
 
-
-        for (Figure figure : paintPane.getCanvasState().figures()) {
+        for (Figure figure : paintPane.getCanvasState().figuresReversed()) {
             if (figure.containsPoint(point)){
                 paintPane.setSelectedFigure(figure);
                 return;
@@ -52,7 +51,6 @@ public class SelectionToolButton extends ToolButton {
             initialY = y;
             paintPane.redrawCanvas();
         }
-        paintPane.setSelectedFigure(selectedFigure);
     }
 
     @Override
@@ -62,17 +60,16 @@ public class SelectionToolButton extends ToolButton {
         paintPane.setSelectedFigure(figure);
         paintPane.getStatusPane().updateStatus(figure != null ? "Selected: " + figure : "No figure found");
 
-
-//        if(figure != null) {
-//            paintPane.getButtonBox().getLayerChoiceBox().setValue("Capa %d".formatted(figure.getLayer()));
-//            paintPane.getButtonBox().getFillColorPickerPrimary().setValue(figure.getColor());
-//            paintPane.getButtonBox().getFillColorPickerSecondary().setValue(figure.getSecondaryColor());
-//            paintPane.getButtonBox().getShadowChoiceBox().setValue(figure.getShadowType());
-//            paintPane.getButtonBox().getLineTypeChoiceBox().setValue(figure.getLineType());
-//        }else{
-//            paintPane.getShadowChoiceBox().setValue(ShadowType.NONE);
-//            paintPane.getLineTypeChoiceBox().setValue(LineType.NORMAL);
-//        }
+        if(figure != null) {
+            paintPane.getButtonBox().getLayerChoiceBox().setValue("Capa %d".formatted(figure.getLayer()));
+            paintPane.getButtonBox().getFillColorPickerPrimary().setValue(figure.getColor());
+            paintPane.getButtonBox().getFillColorPickerSecondary().setValue(figure.getSecondaryColor());
+            paintPane.getButtonBox().getShadowChoiceBox().setValue(figure.getShadowType());
+            paintPane.getButtonBox().getLineTypeChoiceBox().setValue(figure.getLineType());
+        }else{
+            paintPane.getButtonBox().getShadowChoiceBox().setValue(ShadowType.NONE);
+            paintPane.getButtonBox().getLineTypeChoiceBox().setValue(LineType.NORMAL);
+        }
         paintPane.redrawCanvas();
     }
 

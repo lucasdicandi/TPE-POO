@@ -7,11 +7,11 @@ import frontend.Renders.EllipseRenderer;
 public class CircleToolButton extends ToolButton {
 
     EllipseRenderer circleToPlain = new EllipseRenderer();
-    public CircleToolButton() {
+    public CircleToolButton(PaintPane paintPane) {
         super("Círculo");
-//        this.setOnAction(event -> {
-//            paintPane.setSelectedFigure(null);
-//        });
+        this.setOnAction(event -> {
+            paintPane.setSelectedFigure(null);
+        });
     }
 
     @Override
