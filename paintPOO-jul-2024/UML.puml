@@ -1,4 +1,3 @@
-
 @startuml
 
 package backend.model {
@@ -38,6 +37,12 @@ package backend.model {
         - Point centerPoint
         - double sMayorAxis
         - double sMinorAxis
+        - Color color
+        - Color secondaryColor
+        - ShadowType shadowType
+        - LineType lineType
+        - int layer
+        - boolean showable
         + Ellipse(Point startPoint, Point endPoint)
         + String toString()
         + Point getCenterPoint()
@@ -69,153 +74,120 @@ package backend.model {
     class Square extends Rectangle {
         + Square(Point startPoint, Point endPoint)
         + String toString()
+        + void draw(double diffX, double diffY)
         + boolean containsPoint(Point point)
+    }
+
+    enum LineType {
+        - double[] dashes
+        + double[] getDashes()
+    }
+
+    enum ShadowType {
+        -double offset
+        +double getOffset()
     }
 }
 
 package backend {
     class CanvasState {
-        - List<Figure> list
+        - Figure[] figures
+        - Point startPoint
+        - Point endPoint
+        - Color primaryColor
+        - Color secondaryColor
+        - ShadowType shadowType
+        - LineType lineType
+        - double LineWidth
+        - int selectedLayer
+        + CanvasState()
         + void addFigure(Figure figure)
+        + Figure getFigureAtPoint(Point point)
         + void removeFigure(Figure figure)
-        + List<Figure> getFigures()
-        + Figure getFigureAt(Point point)
-        + void clear()
+        + void moveFigureToLayer(Figure figure, int layer)
+        + Figure[] getFigures()
+        + void clearCanvas()
     }
 }
 
 package frontend {
     class AppLauncher {
-        +void start(Stage primaryStage)
     }
 
     class MainFrame {
-        +MainFrame()
-        +void initializeComponents()
     }
 
     class PaintPane {
-        - Canvas canvas
-        - CanvasState canvasState
-        - Figure selectedFigure
-        + PaintPane()
-        + void redrawCanvas()
-        + void addFigure(Figure figure)
-        + void removeFigure(Figure figure)
-        + Figure getSelectedFigure()
-        + void setSelectedFigure(Figure figure)
-        + void clearSelection()
-        + void moveFigureToCenter(Figure figure)
     }
 
     class StatusPane {
-        +StatusPane()
-        + void updateStatus(String status)
+    }
+
+    class AppMenuBar {
     }
 
     package Buttons {
-        package ToolButton{
-        abstract class ToolButton {
-            +ToolButton(String label)
-            +abstract void onMouseClicked(PaintPane paintPane, double x, double y)
+        package ToolButtons {
+            class ToolButton {
+                + ToolButton()
+                + void onMousePressed(PaintPane paintPane, double x, double y)
+                + void onMouseDragged(PaintPane paintPane, double x, double y)
+                + void onMouseReleased(PaintPane paintPane, double x, double y)
+            }
+
+            class AddLayerToolButton extends ToolButton {
+            }
+
+            class CenterToolButton extends ToolButton {
+            }
+
+            class CircleToolButton extends ToolButton {
+            }
+
+            class DeleteLayerToolButton extends ToolButton {
+            }
+
+            class DeleteToolButton extends ToolButton {
+            }
+
+            class DivideToolButton extends ToolButton {
+            }
+
+            class DuplicateToolButton extends ToolButton {
+            }
+
+            class EllipseToolButton extends ToolButton {
+            }
+
+            class RectangleToolButton extends ToolButton {
+            }
+
+            class SelectionToolButton extends ToolButton {
+            }
+
+            class SquareToolButton extends ToolButton {
+            }
         }
 
-        class CenterToolButton extends ToolButton {
-            +CenterToolButton()
-            +void onMouseClicked(PaintPane paintPane, double x, double y)
+        package RadioButton {
+            class HideLayerRadioButton {
+            }
+
+            class ShowLayerRadioButton {
+            }
         }
 
-        class DivideToolButton extends ToolButton {
-            +DivideToolButton()
-            +void onMouseClicked(PaintPane paintPane, double x, double y)
+        package Slider {
+            class LineWithSliderButton {
+            }
         }
-
-        class DuplicateToolButton extends ToolButton {
-            +DuplicateToolButton()
-            +void onMouseClicked(PaintPane paintPane, double x, double y)
-        }
-
-        class CircleToolButton extends ToolButton {
-            +CircleToolButton()
-            +void onMousePressed(PaintPane paintPane, double x, double y)
-            +void onMouseReleased(PaintPane paintPane, double x, double y)
-        }
-
-        class EllipseToolButon extends ToolButton{
-        }
-
-        class SelectionToolButton extends ToolButton {
-            -double initialX
-            -double initialY
-            +SelectionToolButton()
-            +void onMousePressed(PaintPane paintPane, double x, double y)
-            +void onMouseReleased(PaintPane paintPane, double x, double y)
-            +void onMouseClicked(PaintPane paintPane, double x, double y)
-            +void onMouseDragged(PaintPane paintPane, double x, double y)
-
-        }
-
-        class RectangleToolButton extends ToolButton {
-            +RectangleToolButton()
-            +void onMousePressed(PaintPane paintPane, double x, double y)
-                        +void onMouseReleased(PaintPane paintPane, double x, double y)
-        }
-
-        class SquareToolButton extends ToolButton{
-        }
-
-        class AddLayerToolButton extends ToolButton{
-        }
-
-        class DeleteLayerToolButton extends ToolButton{
-        }
-
-        class DeleteToolButton extends ToolButton{
-        }
-        }
-
-
-    package ChoiceBox{
-        class LayerChoiceBox{
-
-        }
-
-        class LineTypeChoiceBox{
-
-        }
-
-        class ShadowChoiceBox{
-
-        }
-    }
-
-    package ColorPicker{
-        class FillColorPickerPrimary{
-        }
-
-        class FillColorPickerSecondary{
-        }
-    }
-
-    package RadioButton{
-        class HideLayerRadioButton{
-        }
-
-        class ShowLayerRadioButton{
-        }
-    }
-
-    package Slider{
-        class LinerWithSliderButton{
-
-        }
-    }
     }
 
     package Renders {
         abstract class FigureRenderer {
-            +abstract void render(Figure figure, GraphicsContext gc)
-            +void renderShadow(Figure figure, GraphicsContext gc, Color color)
+            + abstract void render(Figure figure, GraphicsContext gc)
+            + void renderShadow(Figure figure, GraphicsContext gc, Color color)
+            + Paint getColorGradiant(Figure figure)
         }
 
         class CircleRenderer extends EllipseRenderer {
@@ -225,14 +197,15 @@ package frontend {
         }
 
         class RectangleRenderer extends FigureRenderer {
-            +void render(Figure figure, GraphicsContext gc)
+            + void render(Figure figure, GraphicsContext gc)
+            + Paint getColorGradiant(Figure figure)
         }
 
         class EllipseRenderer extends FigureRenderer {
-            +void render(Figure figure, GraphicsContext gc)
+            + void render(Figure figure, GraphicsContext gc)
+            + Paint getColorGradiant(Figure figure)
         }
     }
-
 }
 
 frontend.AppLauncher --> backend.CanvasState
