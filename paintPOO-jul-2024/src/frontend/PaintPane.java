@@ -44,7 +44,7 @@ public class PaintPane extends BorderPane {
 	private final ChoiceBox<String> layerChoiceBox = new ChoiceBox<>();
 	private final ShowLayerRadioButton showLayerButton = new ShowLayerRadioButton(this);
 	private final HideLayerRadioButton hideLayerButton = new HideLayerRadioButton(this);
-	private final LineWithSliderButton lineWithSlider = new LineWithSliderButton(1, 10, 5, this);
+	private final LineWithSliderButton lineWithSlider = new LineWithSliderButton(0, 10, 5, this);
 	private static final int INITIAL_LAYER = 4;
 	private int nextLayerNumber = INITIAL_LAYER;
 	private final AddLayerToolButton addLayerButton = new AddLayerToolButton(this);

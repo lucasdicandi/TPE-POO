@@ -13,7 +13,6 @@ public class AddLayerToolButton extends ToolButton{
             paintPane.incrementNextLayerNumber();
             paintPane.getLayerChoiceBox().getItems().add(newLayer);
             paintPane.getLayerChoiceBox().setValue(newLayer);
-            paintPane.getLayerChoiceBox().setValue("Capa 1");
             paintPane.redrawCanvas();
         });
     }

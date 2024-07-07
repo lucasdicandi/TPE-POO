@@ -1,7 +1,6 @@
 package backend;
 
 import backend.model.Figure;
-import frontend.PaintPane;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
