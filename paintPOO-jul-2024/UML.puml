@@ -15,14 +15,23 @@ package backend.model {
     abstract class Figure {
         - Point startPoint
         - Point endPoint
+        - Color color
+        - Color secondaryColor
+        - ShadowType shadowType
+        - LineType lineType
+        - double LineWidth
+        - int layer
+        - boolean showable
         + Figure(Point startPoint, Point endPoint)
         + String toString()
+        + void cloneProperties(Figure figure)
+        + Figure clone()
+        + Figure[] divide()
         + Point getStartPoint()
         + Point getEndPoint()
-        + abstract double area()
-        + abstract double perimeter()
         + abstract void draw(double diffX, double diffY)
         + abstract boolean containsPoint(Point point)
+        + void moveToCenter(double centerX, double centerY)
     }
 
     class Ellipse extends Figure {
@@ -36,26 +45,23 @@ package backend.model {
         + double getsMinorAxis()
         + void setsMayorAxis(double sMayorAxis)
         + void setsMinorAxis(double sMinorAxis)
-        + double area()
-        + double perimeter()
         + void draw(double diffX, double diffY)
         + boolean containsPoint(Point point)
         + Ellipse clone()
+        + Figure[] divide()
+        + void moveToCenter(double centerX, double centerY)
     }
 
     class Circle extends Ellipse {
         - double radius
         + Circle(Point startPoint, Point endPoint)
         + String toString()
-        + double getRadius()
         + boolean containsPoint(Point point)
     }
 
     class Rectangle extends Figure {
         + Rectangle(Point startPoint, Point endPoint)
         + String toString()
-        + double area()
-        + double perimeter()
         + void draw(double diffX, double diffY)
         + boolean containsPoint(Point point)
     }
@@ -108,6 +114,7 @@ package frontend {
     }
 
     package Buttons {
+        package ToolButton{
         abstract class ToolButton {
             +ToolButton(String label)
             +abstract void onMouseClicked(PaintPane paintPane, double x, double y)
@@ -134,6 +141,9 @@ package frontend {
             +void onMouseReleased(PaintPane paintPane, double x, double y)
         }
 
+        class EllipseToolButon extends ToolButton{
+        }
+
         class SelectionToolButton extends ToolButton {
             -double initialX
             -double initialY
@@ -150,6 +160,56 @@ package frontend {
             +void onMousePressed(PaintPane paintPane, double x, double y)
                         +void onMouseReleased(PaintPane paintPane, double x, double y)
         }
+
+        class SquareToolButton extends ToolButton{
+        }
+
+        class AddLayerToolButton extends ToolButton{
+        }
+
+        class DeleteLayerToolButton extends ToolButton{
+        }
+
+        class DeleteToolButton extends ToolButton{
+        }
+        }
+
+
+    package ChoiceBox{
+        class LayerChoiceBox{
+
+        }
+
+        class LineTypeChoiceBox{
+
+        }
+
+        class ShadowChoiceBox{
+
+        }
+    }
+
+    package ColorPicker{
+        class FillColorPickerPrimary{
+        }
+
+        class FillColorPickerSecondary{
+        }
+    }
+
+    package RadioButton{
+        class HideLayerRadioButton{
+        }
+
+        class ShowLayerRadioButton{
+        }
+    }
+
+    package Slider{
+        class LinerWithSliderButton{
+
+        }
+    }
     }
 
     package Renders {
@@ -172,6 +232,7 @@ package frontend {
             +void render(Figure figure, GraphicsContext gc)
         }
     }
+
 }
 
 frontend.AppLauncher --> backend.CanvasState
