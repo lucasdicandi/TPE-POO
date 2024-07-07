@@ -34,7 +34,6 @@ import java.util.TreeMap;
 
 public class ButtonBox extends Pane {
 
-
     private final PaintPane paintPane;
     private final Color defaultFillColor = Color.YELLOW;
     private ToolButton currentTool;
@@ -224,11 +223,9 @@ public class ButtonBox extends Pane {
     public Map<ShadowType, Color> getShadowRendererMap(){
         return shadowRendererMap;
     }
-
     public ToolButton getCurrentTool() {
         return currentTool;
     }
-
 
 }
 
