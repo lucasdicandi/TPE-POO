@@ -20,11 +20,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
 import java.util.*;
 import javafx.scene.control.ChoiceBox;
 import javafx.collections.FXCollections;
-import javafx.scene.paint.*;
 
 public class PaintPane extends BorderPane {
 	private final CanvasState canvasState;
@@ -49,7 +47,6 @@ public class PaintPane extends BorderPane {
 	private final LineWithSliderButton lineWithSlider = new LineWithSliderButton(1, 10, 5, this);
 	private static final int INITIAL_LAYER = 4;
 	private int nextLayerNumber = INITIAL_LAYER;
-
 	private final AddLayerToolButton addLayerButton = new AddLayerToolButton(this);
 	private final DeleteLayerToolButton deleteLayerButton = new DeleteLayerToolButton(this);
 
@@ -123,16 +120,11 @@ public class PaintPane extends BorderPane {
 		topBar.setPadding(new Insets(5));
 		topBar.setAlignment(Pos.CENTER);
 		topBar.setStyle("-fx-background-color: #999");
-
 		layersMap.put("Capa 1", 1);
 		layersMap.put("Capa 2", 2);
 		layersMap.put("Capa 3", 3);
-
-
 		layerChoiceBox.setItems(FXCollections.observableArrayList(layersMap.keySet()));
-
 		layerChoiceBox.setValue("Capa 1");
-
 		layerChoiceBox.setOnAction(event -> {
 			if(selectedFigure != null) {
 				selectedFigure.setLayer(layersMap.getOrDefault(layerChoiceBox.getValue(), 1));
@@ -141,16 +133,13 @@ public class PaintPane extends BorderPane {
 		});
 
 		ToggleGroup visibilityGroup = new ToggleGroup();
-
 		showLayerButton.setToggleGroup(visibilityGroup);
 		hideLayerButton.setToggleGroup(visibilityGroup);
 		showLayerButton.setSelected(true);
-
 		visibilityGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
 			if (newToggle != null) {
-				RadioButton selectedButton = (RadioButton) newToggle;
-				String selectedLayer = layerChoiceBox.getValue();
-				redrawCanvas();
+                layerChoiceBox.getValue();
+                redrawCanvas();
 			}
 		});
 
@@ -163,7 +152,6 @@ public class PaintPane extends BorderPane {
 				deleteLayerButton
 		);
 	}
-
 
 	private void setupCanvasEvents() {
 		canvas.setOnMousePressed(event -> {
@@ -220,18 +208,14 @@ public class PaintPane extends BorderPane {
 		gc.setLineWidth(figure.getLineWidth());
 		shadowRendererMap.put(ShadowType.COLORED, figure.getColor().darker());
 		shadowRendererMap.put(ShadowType.COLORED_INVERSE, figure.getColor().darker());
-		Color shadowColor = shadowRendererMap.get(figure.getShadowType());
+		gc.setFill(shadowRendererMap.get(figure.getShadowType()));
 		gc.setStroke(Color.TRANSPARENT);
-		gc.setFill(shadowColor);
-		FigureRenderer renderer = rendererMap.get(figure.getClass());
-		renderer.renderShadow(figure, gc, shadowColor);
+		rendererMap.get(figure.getClass()).renderShadow(figure, gc, shadowRendererMap.get(figure.getShadowType()));
 		gc.setLineDashes(figure.getLineType().getDashes());
-		Paint paint = renderer.getColorGradiant(figure);
 		gc.setStroke(figure == selectedFigure ? Color.RED : lineColor);
-		gc.setFill(paint);
-		renderer.render(figure, gc);
+		gc.setFill(rendererMap.get(figure.getClass()).getColorGradiant(figure));
+		rendererMap.get(figure.getClass()).render(figure, gc);
 	}
-
 
 	public Figure findFigureAtPoint(Point point) {
 		for (Figure figure : canvasState.figures().reversed()) {
@@ -253,11 +237,9 @@ public class PaintPane extends BorderPane {
 	public int getNextLayerNumber() {
 		return nextLayerNumber;
 	}
-
 	public void incrementNextLayerNumber() {
 		nextLayerNumber++;
 	}
-
 	public Map<String, Integer> getLayersMap() {
 		return layersMap;
 	}
@@ -303,7 +285,6 @@ public class PaintPane extends BorderPane {
 	public ChoiceBox<LineType> getLineTypeChoiceBox() {
 		return lineTypeChoiceBox;
 	}
-
 	public Map<ShadowType, Color> getShadowRendererMap(){
 		return shadowRendererMap;
 	}

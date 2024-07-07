@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.CanvasState;
+import frontend.Buttons.ChoiceBox.LayerChoiceBox;
 import javafx.scene.layout.VBox;
 
 public class

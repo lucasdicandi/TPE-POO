@@ -7,8 +7,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 public abstract class FigureRenderer {
-    public abstract void render(Figure figure, GraphicsContext gc);
 
+    public abstract void render(Figure figure, GraphicsContext gc);
 
     public void renderShadow(Figure figure, GraphicsContext gc, Color color) {
         Figure shadow = figure.clone();
