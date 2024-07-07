@@ -10,12 +10,16 @@ public class SquareToolButton extends ToolButton {
     SquareRenderer squareToPlane = new SquareRenderer();
     public SquareToolButton() {
         super("Cuadrado");
+//        this.setOnAction(event -> {
+//            paintPane.setSelectedFigure(null);
+//        });
     }
 
     @Override
     public void onMousePressed(PaintPane paintPane, double x, double y) {
         paintPane.setSelectedFigure(null);
         paintPane.setStartPoint(new Point(x, y));
+        paintPane.redrawCanvas();
     }
 
     @Override
@@ -27,6 +31,7 @@ public class SquareToolButton extends ToolButton {
             paintPane.addFigure(figure);
             paintPane.setStartPoint(null);
             squareToPlane.render(figure, paintPane.getGc());
+            paintPane.redrawCanvas();
         }
     }
 }

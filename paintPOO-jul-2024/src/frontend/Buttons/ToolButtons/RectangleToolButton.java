@@ -8,12 +8,18 @@ public class RectangleToolButton extends ToolButton {
     RectangleRenderer rectangleToPlain = new RectangleRenderer();
     public RectangleToolButton() {
         super("Rectángulo");
+//        this.setOnAction(event -> {
+//            paintPane.setSelectedFigure(null);
+//        });
     }
+
+
 
     @Override
     public void onMousePressed(PaintPane paintPane, double x, double y) {
         paintPane.setSelectedFigure(null);
         paintPane.setStartPoint(new Point(x, y));
+        paintPane.redrawCanvas();
     }
 
     @Override
@@ -25,6 +31,7 @@ public class RectangleToolButton extends ToolButton {
             paintPane.addFigure(figure);
             paintPane.setStartPoint(null);
             rectangleToPlain.render(figure, paintPane.getGc());
+            paintPane.redrawCanvas();
         }
     }
 }

@@ -18,12 +18,19 @@ public class CanvasState {
         list.remove(figure);
     }
 
-    public List<Figure> figures() {
+    public Iterable<Figure> figures() {
         list.sort(comparator());
-        return new ArrayList<>(list);
+        return list;
     }
 
-    private Comparator<Figure> comparator(){
+    public Iterable<Figure> figuresReversed() {
+        list.sort(comparator());
+        return list.reversed();
+    }
+
+
+
+    public Comparator<Figure> comparator(){
         return Comparator.comparingInt(Figure::getLayer);
     }
 

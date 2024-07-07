@@ -11,12 +11,16 @@ public class EllipseToolButton extends ToolButton {
     EllipseRenderer ellipseToPlain = new EllipseRenderer();
     public EllipseToolButton() {
         super("Elipse");
+//        this.setOnAction(event -> {
+//            paintPane.setSelectedFigure(null);
+//        });
     }
 
     @Override
     public void onMousePressed(PaintPane paintPane, double x, double y) {
         paintPane.setSelectedFigure(null);
         paintPane.setStartPoint(new Point(x, y));
+        paintPane.redrawCanvas();
     }
 
     @Override
@@ -28,6 +32,7 @@ public class EllipseToolButton extends ToolButton {
             paintPane.addFigure(figure);
             paintPane.setStartPoint(null);
             ellipseToPlain.render(figure, paintPane.getGc());
+            paintPane.redrawCanvas();
         }
     }
 }
