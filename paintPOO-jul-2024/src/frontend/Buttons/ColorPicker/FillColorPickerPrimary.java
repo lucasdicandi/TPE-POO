@@ -9,7 +9,7 @@ public class FillColorPickerPrimary extends ColorPicker {
     public FillColorPickerPrimary(PaintPane paintPane, Color defaultColor){
             super(defaultColor);
             this.setOnAction(event ->{
-            if (paintPane != null) {
+            if (paintPane.getSelectedFigure() != null) {
                 paintPane.getSelectedFigure().setColor(this.getValue());
                 paintPane.getShadowRendererMap().put(ShadowType.COLORED, this.getValue().darker());
                 paintPane.getShadowRendererMap().put(ShadowType.COLORED_INVERSE, this.getValue().darker());
