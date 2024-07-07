@@ -68,8 +68,8 @@ public class PaintPane extends BorderPane {
 		setTop(topBar);
 		setLeft(buttonsBox);
 		setRight(canvas);
-
 	}
+	
 	private void initializeTools() {
 		ToolButton[] toolsArr = {
 				new SelectionToolButton(),

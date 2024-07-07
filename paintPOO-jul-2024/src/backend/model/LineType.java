@@ -1,7 +1,7 @@
 package backend.model;
 
 public enum LineType {
-    NORMAL(null){
+    NORMAL(0){
         @Override
         public String toString(){
             return "Normal";

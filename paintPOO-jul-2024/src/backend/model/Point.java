@@ -30,9 +30,4 @@ public class  Point {
         return String.format("{%.2f , %.2f}", x, y);
     }
 
-    @Override
-    public Point clone() {
-        return new Point(this.x, this.y);
-    }
-
 }
